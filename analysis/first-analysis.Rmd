@@ -1,0 +1,54 @@
+---
+title: "first-analysis"
+author: "alexander-gysin"
+date: "2026-02-10"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+Load packages
+```{r, setup, include = FALSE}
+library(readxl)   # This fixes the "could not find function" error
+library(tidyverse)
+library(workflowr)
+library(here)
+```
+
+
+## Load Metadata and Olink Data
+
+```{r}
+metadata <- read_excel(here("data/Metadata_Olink_PL.xlsx"))
+quant <- read_delim(here("data/quant.csv"), delim = ";")
+```
+
+## Transpose Protein data
+```{r}
+protein_wide <- quant %>%
+  # 1. Take the column named "SampleID" (which actually holds proteins) 
+  # and turn it into the row names so they stay attached during the flip
+  column_to_rownames("SampleID") %>% 
+  
+  # 2. Flip the matrix (Rows become Columns, Columns become Rows)
+  t() %>% 
+  
+  # 3. Convert back to a data frame (t() turns it into a matrix)
+  as.data.frame() %>% 
+  
+  # 4. Take the patient barcodes (which are now row names) 
+  # and put them into a proper column called "SampleID"
+  rownames_to_column("Barcode")
+```
+
+##Merge protein with clinical data
+```{r}
+# Join by the common Sample ID column
+# Ensure the column names match exactly (e.g., "SampleID" vs "sample_id")
+merged_df <- inner_join(metadata, protein_wide, by = "Barcode")
+
+# Check the result
+dim(merged_df) 
+head(merged_df[, 1:10]) # Look at the first 10 columns
+```
+
