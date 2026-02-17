@@ -525,15 +525,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreec583496bc28a96d12873bad42a01ebfc03bb2490targetblankc583496a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreea5e69971d098f0f0523d3dbd6fd1ca87f406e5abtargetblanka5e6997a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/c583496bc28a96d12873bad42a01ebfc03bb2490" target="_blank">c583496</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/a5e69971d098f0f0523d3dbd6fd1ca87f406e5ab" target="_blank">a5e6997</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreec583496bc28a96d12873bad42a01ebfc03bb2490targetblankc583496a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreea5e69971d098f0f0523d3dbd6fd1ca87f406e5abtargetblanka5e6997a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -543,7 +543,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/c583496bc28a96d12873bad42a01ebfc03bb2490" target="_blank">c583496</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/a5e69971d098f0f0523d3dbd6fd1ca87f406e5ab" target="_blank">a5e6997</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -613,6 +613,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/a5e69971d098f0f0523d3dbd6fd1ca87f406e5ab/analysis/Olink-GB.Rmd" target="_blank">a5e6997</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-17
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/8fc46d7030714fd488cb2247e34066b19133b4da/docs/Olink-GB.html" target="_blank">8fc46d7</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -705,11 +739,14 @@ wflow_publish("analysis/Olink-GB.Rmd")
 </div>
 </div>
 </div>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
 <p>This serves as training to analyze Olink data</p>
-<div id="setup" class="section level3">
-<h3>Setup</h3>
+</div>
+<div id="setup" class="section level1">
+<h1>Setup</h1>
+<div id="directories-and-packages" class="section level2">
+<h2>Directories and Packages</h2>
 <pre class="r fold-hide"><code># Get current file name to make folder
 current_file &lt;- &quot;Olink-GB&quot;
 #Output paths
@@ -736,8 +773,14 @@ library(stats)            # Built-in R package; provides prcomp() for PCA (no ne
 library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
 library(pheatmap)         # Quick and clean heatmaps to visualize clusters after PCA
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)</code></pre>
+</div>
+<div id="read-data" class="section level2">
+<h2>Read data</h2>
 <pre class="r"><code>Olink_data &lt;- read.csv(here::here(&quot;data&quot;, &quot;quant.csv&quot;), sep = &quot;;&quot;)
 Clinical_data &lt;- read_excel(here::here(&quot;data&quot;, &quot;Metadata_Olink_PL.xlsx&quot;))</code></pre>
+</div>
+<div id="define-color-palette" class="section level2">
+<h2>Define color palette</h2>
 <pre class="r"><code>my_palette &lt;- colorRampPalette(c(&quot;navy&quot;, &quot;whitesmoke&quot;, &quot;indianred&quot;))(100)</code></pre>
 <br>
 <p>
