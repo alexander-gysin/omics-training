@@ -1,6 +1,6 @@
 ---
 title: "Olink-GB"
-author: "alexander-gysin (alexander.gysin@usz.ch"
+author: "alexander-gysin (alexander.gysin@usz.ch)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: workflowr::wflow_html
 editor_options:
