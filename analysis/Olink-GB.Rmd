@@ -1,0 +1,59 @@
+---
+title: "Olink-GB"
+author: "alexander-gysin (alexander.gysin@usz.ch"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+
+## Introduction
+
+```{r knitr config, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+
+knitr::opts_chunk$set(message = FALSE)
+
+knitr::opts_chunk$set(cache = FALSE)
+
+knitr::opts_chunk$set(dpi = 300, fig.align = "center")
+```
+
+```{r Setup, class.source = "fold-hide"}
+# Get current file name to make folder
+current_file <- "Olink-GB"
+#Output paths
+output_dir_data <- here::here("output", current_file)
+if (!dir.exists(output_dir_data)) dir.create(output_dir_data)
+
+if (!dir.exists(here::here("docs", "figure"))) dir.create(here::here("docs", "figure"))
+
+output_dir_figs <- here::here("docs", "figure", paste0(current_file, ".Rmd"))
+if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)
+
+# Utility Packages
+library(tidyverse)  # Contains dplyr (data manipulation), readr, tibble (modern df), ggplot2 and more
+library(here)       # Uses the project root for file paths; stops "File not found" errors on other PCs
+library(magrittr)   # Provides the pipe operator (%>%) to make your code readable
+library(RColorBrewer) # Provides professional, color-blind friendly palettes for your plots
+library(readxl)     # Used to load excel files
+
+# Differential Expression & PCA Packages
+library(limma)            # The gold standard for linear modeling and DEA (works for Olink/Proteomics)
+library(stats)            # Built-in R package; provides prcomp() for PCA (no need to load explicitly)
+
+# Visualization Packages
+library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
+library(pheatmap)         # Quick and clean heatmaps to visualize clusters after PCA
+library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)
+
+```
+
+```{r read data}
+Olink_data <- read.csv(here::here("data", "quant.csv"), sep = ";")
+Clinical_data <- read_excel(here::here("data", "Metadata_Olink_PL.xlsx"))
+```
+
+```{r my_palette}
+my_palette <- colorRampPalette(c("navy", "whitesmoke", "indianred"))(100)
+```
