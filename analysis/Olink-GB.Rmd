@@ -23,7 +23,7 @@ knitr::opts_chunk$set(dpi = 300, fig.align = "center")
 # Setup
 ### Directories and Packages
 
-```{r Directories and Packages, class.source = "fold-hide"}
+```{r Directories and Packages}
 # Get current file name to make folder
 current_file <- "Olink-GB"
 #Output paths
@@ -60,6 +60,6 @@ Clinical_data <- read_excel(here::here("data", "Metadata_Olink_PL.xlsx"))
 ```
 
 ### Define color palette
-```{r my_palette}
+```{r my_palette, class.source = "fold-show"}
 my_palette <- colorRampPalette(c("navy", "whitesmoke", "indianred"))(100)
 ```
