@@ -7,7 +7,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-## Introduction
+# Introduction
 This serves as training to analyze Olink data
 
 ```{r knitr config, include=FALSE, cache=FALSE}
@@ -20,7 +20,8 @@ knitr::opts_chunk$set(cache = FALSE)
 knitr::opts_chunk$set(dpi = 300, fig.align = "center")
 ```
 
-### Setup
+# Setup
+## Directories and Packages
 
 ```{r Directories and Packages, class.source = "fold-hide"}
 # Get current file name to make folder
@@ -52,11 +53,13 @@ library(patchwork)        # Essential for combining multiple plots (e.g., PCA ne
 
 ```
 
+## Read data
 ```{r read data}
 Olink_data <- read.csv(here::here("data", "quant.csv"), sep = ";")
 Clinical_data <- read_excel(here::here("data", "Metadata_Olink_PL.xlsx"))
 ```
 
+## Define color palette
 ```{r my_palette}
 my_palette <- colorRampPalette(c("navy", "whitesmoke", "indianred"))(100)
 ```
