@@ -8,6 +8,7 @@ editor_options:
 ---
 
 ## Introduction
+This serves as training to analyze Olink data
 
 ```{r knitr config, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(warning = FALSE)
@@ -19,7 +20,9 @@ knitr::opts_chunk$set(cache = FALSE)
 knitr::opts_chunk$set(dpi = 300, fig.align = "center")
 ```
 
-```{r Setup, class.source = "fold-hide"}
+### Setup
+
+```{r Directories and Packages, class.source = "fold-hide"}
 # Get current file name to make folder
 current_file <- "Olink-GB"
 #Output paths
