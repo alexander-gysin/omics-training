@@ -537,15 +537,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree54609d1dd9114cc8b465e272da80a0ad698802f6targetblank54609d1a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreef29a5c64c6d0c36e713bbece8c6a90699037bc67targetblankf29a5c6a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/54609d1dd9114cc8b465e272da80a0ad698802f6" target="_blank">54609d1</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/f29a5c64c6d0c36e713bbece8c6a90699037bc67" target="_blank">f29a5c6</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree54609d1dd9114cc8b465e272da80a0ad698802f6targetblank54609d1a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreef29a5c64c6d0c36e713bbece8c6a90699037bc67targetblankf29a5c6a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/54609d1dd9114cc8b465e272da80a0ad698802f6" target="_blank">54609d1</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/f29a5c64c6d0c36e713bbece8c6a90699037bc67" target="_blank">f29a5c6</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -625,6 +625,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/f29a5c64c6d0c36e713bbece8c6a90699037bc67/analysis/Olink-GB.Rmd" target="_blank">f29a5c6</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/5f2d281035502be1ea201bebe45f8e7cc20f3335/docs/Olink-GB.html" target="_blank">5f2d281</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -945,13 +979,21 @@ library(factoextra)       # PCA Visualization
 library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
 library(pheatmap)         # Quick and clean heatmaps to visualize clusters after PCA
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)</code></pre>
-<p>#Data preparation &amp; QC ## Initialization ### Read data</p>
+</div>
+</div>
+<div id="data-preparation-qc" class="section level1">
+<h1>Data preparation &amp; QC</h1>
+<div id="initialization" class="section level2">
+<h2>Initialization</h2>
+<div id="read-data" class="section level3">
+<h3>Read data</h3>
 <pre class="r"><code>Olink_data &lt;- read.csv(here::here(&quot;data&quot;, &quot;quant.csv&quot;), sep = &quot;;&quot;)
 Clinical_data &lt;- read_excel(here::here(&quot;data&quot;, &quot;Metadata_Olink_PL.xlsx&quot;))</code></pre>
 </div>
 <div id="define-color-palette" class="section level3">
 <h3>Define color palette</h3>
 <pre class="r"><code>my_palette &lt;- colorRampPalette(c(&quot;navy&quot;, &quot;whitesmoke&quot;, &quot;indianred&quot;))(100)</code></pre>
+</div>
 </div>
 <div id="data-clean-up" class="section level2">
 <h2>Data clean-up</h2>
@@ -977,9 +1019,14 @@ class="section level3">
 <h3>Check for missing values in the Olink file</h3>
 <pre class="r"><code>sum(is.na(Olink_data))</code></pre>
 <pre><code>[1] 0</code></pre>
-<p>#Results ## PCA Analysis {.tabset}</p>
 </div>
-<div id="pca-analysis" class="section level3">
+</div>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<div id="pca-analysis" class="section level2 tabset">
+<h2 class="tabset">PCA Analysis</h2>
+<div id="pca-analysis-1" class="section level3">
 <h3>PCA Analysis</h3>
 <pre class="r"><code># Note: PCA functions usually expect samples in ROWS, so we transpose with t()
 pca_res &lt;- PCA(t(Olink_data), graph = FALSE)</code></pre>
@@ -1084,8 +1131,12 @@ alexander-gysin
 </table>
 </div>
 </div>
-<p>###Visualizing contribution by protein in a simple contribution
-plot</p>
+</div>
+<div
+id="visualizing-contribution-by-protein-in-a-simple-contribution-plot"
+class="section level3">
+<h3>Visualizing contribution by protein in a simple contribution
+plot</h3>
 <pre class="r"><code># manually set a common limit
 common_limit &lt;- 0.5
 # Visualize the top 10 proteins contributing to PC1
@@ -1228,7 +1279,8 @@ negative correlation with PC2</p>
 <div id="differential-expression-analysis"
 class="section level2 tabset">
 <h2 class="tabset">Differential Expression Analysis</h2>
-<p>###Create the Design Matrix</p>
+<div id="create-the-design-matrix" class="section level3">
+<h3>Create the Design Matrix</h3>
 <pre class="r"><code># 1. Clean the &#39;Group&#39; column in your metadata directly
 # This replaces hyphens/spaces with dots (e.g., SSc-PAH -&gt; SSc.PAH)
 Clinical_data$Group_Clean &lt;- make.names(Clinical_data$Group)
@@ -1241,6 +1293,7 @@ design &lt;- model.matrix(~ 0 + group_factor)
 
 # 4. Rename columns to match the clean levels (SSc.PAH, SSc.noPAH)
 colnames(design) &lt;- levels(group_factor)</code></pre>
+</div>
 <div id="define-the-comparison" class="section level3">
 <h3>Define the comparison</h3>
 <pre class="r"><code># 5. Define the contrast
