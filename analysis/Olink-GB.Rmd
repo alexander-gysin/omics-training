@@ -10,6 +10,9 @@ editor_options:
 # Introduction
 This serves as training to analyze Olink data
 
+
+# Setup
+### knitr configuration
 ```{r knitr config, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(warning = FALSE)
 
@@ -19,11 +22,8 @@ knitr::opts_chunk$set(cache = FALSE)
 
 knitr::opts_chunk$set(dpi = 300, fig.align = "center")
 ```
-
-# Setup
-### Directories and Packages
-
-```{r Directories and Packages}
+### Directories
+```{r Directories}
 # Get current file name to make folder
 current_file <- "Olink-GB"
 #Output paths
@@ -35,6 +35,9 @@ if (!dir.exists(here::here("docs", "figure"))) dir.create(here::here("docs", "fi
 output_dir_figs <- here::here("docs", "figure", paste0(current_file, ".Rmd"))
 if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)
 
+```
+### Packages
+```{r Packages}
 # Utility Packages
 library(tidyverse)  # Contains dplyr (data manipulation), readr, tibble (modern df), ggplot2 and more
 library(here)       # Uses the project root for file paths; stops "File not found" errors on other PCs
@@ -45,14 +48,17 @@ library(readxl)     # Used to load excel files
 # Differential Expression & PCA Packages
 library(limma)            # The gold standard for linear modeling and DEA (works for Olink/Proteomics)
 library(stats)            # Built-in R package; provides prcomp() for PCA (no need to load explicitly)
+library(FactoMineR)       # Multi Factor Analysis for multi-omics, calculates the contribution to the PCA
+library(factoextra)       # PCA Visualization
 
 # Visualization Packages
 library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
 library(pheatmap)         # Quick and clean heatmaps to visualize clusters after PCA
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)
-
 ```
 
+#Data preparation & QC
+## Initialization
 ### Read data
 ```{r read data}
 Olink_data <- read.csv(here::here("data", "quant.csv"), sep = ";")
@@ -63,3 +69,250 @@ Clinical_data <- read_excel(here::here("data", "Metadata_Olink_PL.xlsx"))
 ```{r my_palette, class.source = "fold-show"}
 my_palette <- colorRampPalette(c("navy", "whitesmoke", "indianred"))(100)
 ```
+
+## Data clean-up
+### Formating the Olink file
+Protein names to rownames in the Olink file
+```{r Protein names ro rownames}
+Olink_data <- Olink_data %>%
+  column_to_rownames("SampleID") # Replace "ProteinID" with your actual column name
+```
+
+### Order Olink data according to metadata
+```{r Order Olink data}
+Olink_data <- Olink_data[, Clinical_data$Barcode]
+
+# Check if column names match metadata barcodes exactly
+stopifnot(all(colnames(Olink_data) == Clinical_data$Barcode))
+```
+### Remove the Olink_ID from the rownames
+```{r}
+rownames(Olink_data) <- str_remove(rownames(Olink_data), "_.*")
+```
+
+### Check for missing values in the Olink file
+```{r missing values}
+sum(is.na(Olink_data))
+```
+
+#Results
+## PCA Analysis {.tabset}
+### PCA Analysis
+```{r PCA Analysis}
+# Note: PCA functions usually expect samples in ROWS, so we transpose with t()
+pca_res <- PCA(t(Olink_data), graph = FALSE)
+```
+
+## PCA visualization
+### Plotting Eigenvalues
+```{r eigenvalue vis}
+p_scree <- fviz_eig(pca_res, addlabels = TRUE, barfill = "navy", barcolor = "navy")
+p_scree
+```
+Ths plot shows the Eigenvalues of the individual Principal Component. The higher the percentage the more variance is explained by the Principal Component.
+PC1 and PC2 cumulatively explain 37.1% of the variance, which is deemed acceptable.
+
+### Plotting PCA by Group
+```{r PCA Plot by group}
+# 2. PCA Plot colored by Group
+p_pca <- fviz_pca_ind(pca_res,
+             label = "none", # Hide sample names for clarity
+             habillage = as.factor(Clinical_data$Group), 
+             palette = c("indianred", "navy"),
+             addEllipses = TRUE, 
+             invisible = "quali") +
+             theme_minimal() +
+             labs(title = "Proteomics PCA")
+p_pca
+```
+
+###Visualizing contribution by protein in a simple contribution plot
+```{r top 10 proteins}
+# manually set a common limit
+common_limit <- 0.5
+# Visualize the top 10 proteins contributing to PC1
+p_top_proteins_PD1 <- fviz_contrib(pca_res, choice = "var", axes = 1, top = 10, fill = "navy", color = "navy", sort.val = "asc") +
+  theme_minimal() +
+  labs(title = "Top 10 Proteins Contributing to PC1",
+       x = "Proteins",
+       y = "Contribution [%]")+
+  coord_flip(ylim = c(0, common_limit)) # Flips the plot and sets the scale
+
+# Visualize the top 10 proteins contributing to PC2
+p_top_proteins_PD2 <- fviz_contrib(pca_res, choice = "var", axes = 2, top = 10, fill = "navy", color = "navy", sort.val = "asc") +
+  theme_minimal() +
+  labs(title = "Top 10 Proteins Contributing to PC2",
+       x = "Proteins",
+       y = "Contribution [%]")+
+  coord_flip(ylim = c(0, common_limit)) # Flips the plot and sets the scale
+
+# / displays the plots in vertical order
+p_top_proteins_PD1 / p_top_proteins_PD2
+#alternatively flip the plot horizontally to display more bars 
+```
+This plot shows the top ten contributing proteins in both PD1 and PD2. The dashed line at 0.1% represents the average contribution which is expected in a Principal Component Analysis featuring aproximately 1000 proteins, anything above is considered a contributor.
+
+
+### Visualizing contribution by protein in a loading plot
+```{r loading plot}
+# Variable Correlation Plot
+p_loading <- fviz_pca_var(pca_res, 
+                          # Only show the top 20 proteins by 'contribution' 
+                          # (This keeps the plot clean)
+                          select.var = list(contrib = 20), 
+                          
+                          # Color the proteins by their contribution level
+                          col.var = "contrib", 
+                          gradient.cols = c("navy", "white", "indianred"),
+                          
+                          # Avoid text labels overlapping
+                          repel = TRUE, 
+                          
+                          # Visual aesthetics
+                          alpha.var = "contrib") + 
+  theme_minimal() +
+  labs(title = "Loading Plot: Top 20 Proteins",
+       subtitle = "Direction shows correlation with PC1 (x) and PC2 (y)")
+p_loading
+```
+How to interpret the Loading Plot:
+1.  Horizontal Arrows: These proteins are purely PC1 drivers. If they point to the right, they are high in whatever Group is on the right of your PCA.
+2.  Vertical Arrows: These proteins are driving PC2. They don't differentiate your PC1 groups much, but they show a separate trend (maybe Age or Sex).
+3.  Diagonal Arrows: These proteins contribute to both PC1 and PC2.
+4.  Clusters: If you see a "fan" of 5 proteins all pointing in the exact same direction, those proteins likely belong to the same biological pathway      (e.g., a group of inflammatory cytokines all rising together).
+
+Interpretatio of this Loading Plot:
+1.  Since all proteins "point" in the same direction they are all correlated and likely belong to the same biological process
+2.  They have a positive correlation with PC1 and a negative correlation with PC2
+
+## Differential Expression Analysis {.tabset}
+###Create the Design Matrix
+```{r create design matrix}
+# 1. Clean the 'Group' column in your metadata directly
+# This replaces hyphens/spaces with dots (e.g., SSc-PAH -> SSc.PAH)
+Clinical_data$Group_Clean <- make.names(Clinical_data$Group)
+
+# 2. Re-create the group_factor from the clean column
+group_factor <- as.factor(Clinical_data$Group_Clean)
+
+# 3. Build the design matrix
+design <- model.matrix(~ 0 + group_factor)
+
+# 4. Rename columns to match the clean levels (SSc.PAH, SSc.noPAH)
+colnames(design) <- levels(group_factor)
+```
+
+### Define the comparison
+```{r define the comparison}
+# 5. Define the contrast
+# Syntax: makeContrasts(Group1 - Group2, levels = design)
+contrast.matrix <- makeContrasts(SSc.PAH - SSc.noPAH, levels = design)
+```
+
+### Analysis
+```{r differential expression analysis}
+# Fit the model
+fit <- lmFit(Olink_data, design)
+fit2 <- contrasts.fit(fit, contrast.matrix)
+fit2 <- eBayes(fit2)
+
+# 1. Get the results from limma
+de_results <- topTable(fit2, coef = 1, number = Inf, sort.by = "P") %>%
+  rownames_to_column("Protein")
+
+# 2. CREATE THE MISSING COLUMN (The Fix)
+de_results <- de_results %>%
+  mutate(Significance = case_when(
+    adj.P.Val < 0.05 & logFC > 0.5  ~ "Up-regulated",
+    adj.P.Val < 0.05 & logFC < -0.5 ~ "Down-regulated",
+    TRUE                          ~ "Not Significant"
+  ))
+```
+
+## Visualization of the Differential Analysis
+### Volcanoplot
+```{r volcano plot preparation}
+# --- 1. DATA PREPARATION ---
+# Calculate the exact raw p-value that hits the FDR 0.05 threshold
+p_cutoff <- de_results %>% 
+  filter(adj.P.Val < 0.05) %>% 
+  pull(P.Value) %>% 
+  max()
+
+# Create a 'Score' to identify the "top corners" (High FC * High Significance)
+# This ensures we label the most extreme points in the top-left and top-right.
+de_results <- de_results %>%
+  mutate(label_score = abs(logFC) * -log10(P.Value))
+
+# Identify top 10 Up and top 10 Down based on this combined score
+top_up <- de_results %>%
+  filter(Significance == "Up-regulated") %>%
+  slice_max(order_by = label_score, n = 10)
+
+top_down <- de_results %>%
+  filter(Significance == "Down-regulated") %>%
+  slice_min(order_by = logFC, n = 10) # Using logFC here ensures we stay on the left side
+
+# Re-selecting top_down based on score but ensuring they are actually down-regulated
+top_down <- de_results %>%
+  filter(Significance == "Down-regulated") %>%
+  slice_max(order_by = label_score, n = 10)
+
+top_labels <- bind_rows(top_up, top_down)
+
+```
+
+```{r volcano plotting}
+# --- 2. THE FINAL PLOT ---
+ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
+  geom_point(alpha = 0.4, size = 1.5) +
+  scale_color_manual(values = c("Down-regulated" = "navy", 
+                                "Not Significant" = "grey85", 
+                                "Up-regulated" = "indianred")) +
+  
+  # Clean, small text labels
+  geom_text_repel(data = top_labels, 
+                  aes(label = Protein),
+                  size = 2.5,
+                  color = "black",
+                  box.padding = 0.5,
+                  point.padding = 0.2,
+                  min.segment.length = 0,
+                  segment.size = 0.2,
+                  segment.color = "grey30",
+                  max.overlaps = Inf) +
+  
+  theme_minimal() +
+  labs(title = "SSc.PAH vs SSc.noPAH: Top Hits",
+       subtitle = "Labeled by multiplied Significance and Fold Change",
+       x = "Log2 Fold Change",
+       y = "-log10(Raw P-value)") +
+  
+  # Guidelines
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dotted", color = "grey40") +
+  geom_hline(yintercept = -log10(p_cutoff), linetype = "dashed", color = "grey40", alpha = 0.7) +
+  
+  # Move FDR Label to the far LEFT to avoid crashing with the "Up-regulated" top corner
+  annotate("label", 
+           x = min(de_results$logFC), 
+           y = -log10(p_cutoff), 
+           label = "FDR < 0.05", 
+           hjust = 0.2,             # Align to the left of the x-coordinate
+           vjust = 1.4, 
+           size = 2.5, 
+           color = "black", 
+           fill = "white",        # White background prevents "crashing" with grid lines
+           label.size = NA,       # Removes the box border
+           fontface = "plain")
+```
+
+continue with:
+1. The Heatmap (Sample Clustering)
+A heatmap is essential because it tells you if your "top hits" actually succeed in grouping your patients correctly. If the SSc-PAH patients don't cluster together, your differential proteins might be driven by outliers.
+
+2. Boxplots (The "Deep Dive")
+Once you've identified your #1 protein (e.g., the one with the highest "score" from our last plot), you need to see the raw data distribution. A boxplot shows you the spread, the median, and if there are any outliers.
+
+3. MA Plot (The "Sanity Check")
+An MA plot looks at the relationship between the average expression (A) and the log fold change (M).
+Purpose: It helps you check if your significant results only happen in very low-abundance proteins (which can be noisy) or high-abundance ones. Ideally, your "red dots" should be spread across the x-axis.
