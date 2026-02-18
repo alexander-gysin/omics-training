@@ -537,15 +537,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree48ac657607c15ead3162113aec9a8282d3f4072dtargetblank48ac657a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree54609d1dd9114cc8b465e272da80a0ad698802f6targetblank54609d1a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/48ac657607c15ead3162113aec9a8282d3f4072d" target="_blank">48ac657</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/54609d1dd9114cc8b465e272da80a0ad698802f6" target="_blank">54609d1</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree48ac657607c15ead3162113aec9a8282d3f4072dtargetblank48ac657a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree54609d1dd9114cc8b465e272da80a0ad698802f6targetblank54609d1a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/48ac657607c15ead3162113aec9a8282d3f4072d" target="_blank">48ac657</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/54609d1dd9114cc8b465e272da80a0ad698802f6" target="_blank">54609d1</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -572,7 +572,6 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    output/Olink-GB/
 
 Untracked files:
@@ -626,6 +625,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/54609d1dd9114cc8b465e272da80a0ad698802f6/analysis/Olink-GB.Rmd" target="_blank">54609d1</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/9ba78e7f24bd98107a5e62a732537c23398a02c6/docs/Olink-GB.html" target="_blank">9ba78e7</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -918,7 +951,7 @@ Clinical_data &lt;- read_excel(here::here(&quot;data&quot;, &quot;Metadata_Olink
 </div>
 <div id="define-color-palette" class="section level3">
 <h3>Define color palette</h3>
-<pre class="r fold-show"><code>my_palette &lt;- colorRampPalette(c(&quot;navy&quot;, &quot;whitesmoke&quot;, &quot;indianred&quot;))(100)</code></pre>
+<pre class="r"><code>my_palette &lt;- colorRampPalette(c(&quot;navy&quot;, &quot;whitesmoke&quot;, &quot;indianred&quot;))(100)</code></pre>
 </div>
 <div id="data-clean-up" class="section level2">
 <h2>Data clean-up</h2>
@@ -944,7 +977,10 @@ class="section level3">
 <h3>Check for missing values in the Olink file</h3>
 <pre class="r"><code>sum(is.na(Olink_data))</code></pre>
 <pre><code>[1] 0</code></pre>
-<p>#Results ## PCA Analysis {.tabset} ### PCA Analysis</p>
+<p>#Results ## PCA Analysis {.tabset}</p>
+</div>
+<div id="pca-analysis" class="section level3">
+<h3>PCA Analysis</h3>
 <pre class="r"><code># Note: PCA functions usually expect samples in ROWS, so we transpose with t()
 pca_res &lt;- PCA(t(Olink_data), graph = FALSE)</code></pre>
 </div>
@@ -955,8 +991,45 @@ pca_res &lt;- PCA(t(Olink_data), graph = FALSE)</code></pre>
 <h3>Plotting Eigenvalues</h3>
 <pre class="r"><code>p_scree &lt;- fviz_eig(pca_res, addlabels = TRUE, barfill = &quot;navy&quot;, barcolor = &quot;navy&quot;)
 p_scree</code></pre>
-<p><img src="figure/Olink-GB.Rmd/eigenvalue%20vis-1.png" width="2100" style="display: block; margin: auto;" />
-Ths plot shows the Eigenvalues of the individual Principal Component.
+<p><img src="figure/Olink-GB.Rmd/eigenvalue%20vis-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-eigenvalue-vis-1">
+Past versions of "eigenvalue vis-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-eigenvalue-vis-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/9ba78e7f24bd98107a5e62a732537c23398a02c6/docs/figure/Olink-GB.Rmd/eigenvalue vis-1.png" target="_blank">9ba78e7</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Ths plot shows the Eigenvalues of the individual Principal Component.
 The higher the percentage the more variance is explained by the
 Principal Component. PC1 and PC2 cumulatively explain 37.1% of the
 variance, which is deemed acceptable.</p>
@@ -974,6 +1047,43 @@ p_pca &lt;- fviz_pca_ind(pca_res,
              labs(title = &quot;Proteomics PCA&quot;)
 p_pca</code></pre>
 <p><img src="figure/Olink-GB.Rmd/PCA%20Plot%20by%20group-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-PCA-Plot-by-group-1">
+Past versions of "PCA Plot by group-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-PCA-Plot-by-group-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/9ba78e7f24bd98107a5e62a732537c23398a02c6/docs/figure/Olink-GB.Rmd/PCA Plot by group-1.png" target="_blank">9ba78e7</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>###Visualizing contribution by protein in a simple contribution
 plot</p>
 <pre class="r"><code># manually set a common limit
@@ -997,6 +1107,43 @@ p_top_proteins_PD2 &lt;- fviz_contrib(pca_res, choice = &quot;var&quot;, axes = 
 # / displays the plots in vertical order
 p_top_proteins_PD1 / p_top_proteins_PD2</code></pre>
 <p><img src="figure/Olink-GB.Rmd/top%2010%20proteins-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-top-10-proteins-1">
+Past versions of "top 10 proteins-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-top-10-proteins-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/9ba78e7f24bd98107a5e62a732537c23398a02c6/docs/figure/Olink-GB.Rmd/top 10 proteins-1.png" target="_blank">9ba78e7</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>#alternatively flip the plot horizontally to display more bars </code></pre>
 <p>This plot shows the top ten contributing proteins in both PD1 and
 PD2. The dashed line at 0.1% represents the average contribution which
@@ -1025,16 +1172,53 @@ p_loading &lt;- fviz_pca_var(pca_res,
   labs(title = &quot;Loading Plot: Top 20 Proteins&quot;,
        subtitle = &quot;Direction shows correlation with PC1 (x) and PC2 (y)&quot;)
 p_loading</code></pre>
-<p><img src="figure/Olink-GB.Rmd/loading%20plot-1.png" width="2100" style="display: block; margin: auto;" />
-How to interpret the Loading Plot: 1. Horizontal Arrows: These proteins
-are purely PC1 drivers. If they point to the right, they are high in
-whatever Group is on the right of your PCA. 2. Vertical Arrows: These
-proteins are driving PC2. They don’t differentiate your PC1 groups much,
-but they show a separate trend (maybe Age or Sex). 3. Diagonal Arrows:
-These proteins contribute to both PC1 and PC2. 4. Clusters: If you see a
-“fan” of 5 proteins all pointing in the exact same direction, those
-proteins likely belong to the same biological pathway (e.g., a group of
-inflammatory cytokines all rising together).</p>
+<p><img src="figure/Olink-GB.Rmd/loading%20plot-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-loading-plot-1">
+Past versions of "loading plot-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-loading-plot-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/9ba78e7f24bd98107a5e62a732537c23398a02c6/docs/figure/Olink-GB.Rmd/loading plot-1.png" target="_blank">9ba78e7</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>How to interpret the Loading Plot: 1. Horizontal Arrows: These
+proteins are purely PC1 drivers. If they point to the right, they are
+high in whatever Group is on the right of your PCA. 2. Vertical Arrows:
+These proteins are driving PC2. They don’t differentiate your PC1 groups
+much, but they show a separate trend (maybe Age or Sex). 3. Diagonal
+Arrows: These proteins contribute to both PC1 and PC2. 4. Clusters: If
+you see a “fan” of 5 proteins all pointing in the exact same direction,
+those proteins likely belong to the same biological pathway (e.g., a
+group of inflammatory cytokines all rising together).</p>
 <p>Interpretatio of this Loading Plot: 1. Since all proteins “point” in
 the same direction they are all correlated and likely belong to the same
 biological process 2. They have a positive correlation with PC1 and a
@@ -1157,6 +1341,43 @@ ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
            label.size = NA,       # Removes the box border
            fontface = &quot;plain&quot;)</code></pre>
 <p><img src="figure/Olink-GB.Rmd/volcano%20plotting-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-volcano-plotting-1">
+Past versions of "volcano plotting-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-volcano-plotting-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/9ba78e7f24bd98107a5e62a732537c23398a02c6/docs/figure/Olink-GB.Rmd/volcano plotting-1.png" target="_blank">9ba78e7</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>continue with: 1. The Heatmap (Sample Clustering) A heatmap is
 essential because it tells you if your “top hits” actually succeed in
 grouping your patients correctly. If the SSc-PAH patients don’t cluster
