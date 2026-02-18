@@ -11,17 +11,8 @@ editor_options:
 This serves as training to analyze Olink data
 
 
-# Setup
-### knitr configuration
-```{r knitr config, include=FALSE, cache=FALSE}
-knitr::opts_chunk$set(warning = FALSE)
+## Setup {.tabset}
 
-knitr::opts_chunk$set(message = FALSE)
-
-knitr::opts_chunk$set(cache = FALSE)
-
-knitr::opts_chunk$set(dpi = 300, fig.align = "center")
-```
 ### Directories
 ```{r Directories}
 # Get current file name to make folder
@@ -36,6 +27,24 @@ output_dir_figs <- here::here("docs", "figure", paste0(current_file, ".Rmd"))
 if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)
 
 ```
+
+### knitr configuration
+```{r knitr config, cache=FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+
+knitr::opts_chunk$set(message = FALSE)
+
+knitr::opts_chunk$set(cache = FALSE)
+
+knitr::opts_chunk$set(dev = c("png", "pdf"),
+                      dpi = 300, 
+                      fig.width = 10,
+                      fig.heigt = 8,
+                      out.width = "100%",
+                      fig.path = paste0(output_dir_figs, "/"),
+                      fig.align = "center")
+```
+
 ### Packages
 ```{r Packages}
 # Utility Packages
@@ -57,6 +66,19 @@ library(pheatmap)         # Quick and clean heatmaps to visualize clusters after
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)
 ```
 
+### ggplot global theme
+```{r}
+# Set the default ggplot theme globally
+theme_set(
+  theme_bw(base_size = 12) + 
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = "bold", size = 14),
+    strip.background = element_rect(fill = "grey95")
+  )
+)
+```
+
 # Data preparation & QC
 ## Initialization
 ### Read data
@@ -67,7 +89,7 @@ Clinical_data <- read_excel(here::here("data", "Metadata_Olink_PL.xlsx"))
 
 ### Define color palette
 ```{r my_palette}
-my_palette <- colorRampPalette(c("navy", "whitesmoke", "indianred"))(100)
+my_palette <- colorRampPalette(c("navy", "whitesmoke", "firebrick3"))(100)
 ```
 
 ## Data clean-up
@@ -104,7 +126,7 @@ sum(is.na(Olink_data))
 pca_res <- PCA(t(Olink_data), graph = FALSE)
 ```
 
-## PCA visualization {.tabset}
+## PCA visualization 
 ### Plotting Eigenvalues
 ```{r eigenvalue vis}
 p_scree <- fviz_eig(pca_res, addlabels = TRUE, barfill = "navy", barcolor = "navy")
@@ -114,7 +136,7 @@ Ths plot shows the Eigenvalues of the individual Principal Component. The higher
 PC1 and PC2 cumulatively explain 37.1% of the variance, which is deemed acceptable.
 
 ### Plotting PCA by Group
-```{r PCA Plot by group}
+```{r PCA Plot by group, class.source = "fold-hide"}
 # 2. PCA Plot colored by Group
 p_pca <- fviz_pca_ind(pca_res,
              label = "none", # Hide sample names for clarity
@@ -128,7 +150,7 @@ p_pca
 ```
 
 ### Visualizing contribution by protein in a simple contribution plot
-```{r top 10 proteins}
+```{r top 10 proteins, class.source = "fold-hide"}
 # manually set a common limit
 common_limit <- 0.5
 # Visualize the top 10 proteins contributing to PC1
@@ -155,7 +177,7 @@ This plot shows the top ten contributing proteins in both PD1 and PD2. The dashe
 
 
 ### Visualizing contribution by protein in a loading plot
-```{r loading plot}
+```{r loading plot, class.source = "fold-hide"}
 # Variable Correlation Plot
 p_loading <- fviz_pca_var(pca_res, 
                           # Only show the top 20 proteins by 'contribution' 
@@ -233,7 +255,7 @@ de_results <- de_results %>%
 
 ## Visualization of the Differential Analysis
 ### Volcanoplot
-```{r volcano plot preparation}
+```{r volcano plot preparation, class.source = "fold-hide"}
 # --- 1. DATA PREPARATION ---
 # Calculate the exact raw p-value that hits the FDR 0.05 threshold
 p_cutoff <- de_results %>% 
@@ -264,7 +286,7 @@ top_labels <- bind_rows(top_up, top_down)
 
 ```
 
-```{r volcano plotting}
+```{r volcano plotting, class.source = "fold-hide"}
 # --- 2. THE FINAL PLOT ---
 ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
   geom_point(alpha = 0.4, size = 1.5) +
@@ -318,3 +340,91 @@ Once you've identified your #1 protein (e.g., the one with the highest "score" f
 3. MA Plot (The "Sanity Check")
 An MA plot looks at the relationship between the average expression (A) and the log fold change (M).
 Purpose: It helps you check if your significant results only happen in very low-abundance proteins (which can be noisy) or high-abundance ones. Ideally, your "red dots" should be spread across the x-axis.
+
+### Heatmap
+```{r heatmap, class.source = "fold-hide"}
+# 1. Get the names of the top 30 proteins by significance
+top_hits <- de_results %>% 
+  slice_min(order_by = adj.P.Val, n = 20) %>% 
+  pull(Protein)
+
+# 2. Subset your original data
+# Assumes Olink_data has proteins as rows and sample IDs as columns
+plot_matrix <- Olink_data[top_hits, ]
+
+# 3. Create annotation for the columns (samples)
+annotation_col <- data.frame(Status = Clinical_data$Group)
+rownames(annotation_col) <- colnames(Olink_data)
+
+# 4. Plot
+pheatmap(plot_matrix, 
+         scale = "row",                      # Normalize by protein to see relative changes
+         annotation_col = annotation_col, 
+         show_colnames = FALSE,
+         main = "Top 20 Proteins: SSc-PAH vs SSc-noPAH",
+         color = my_palette)
+```
+This graph shows the 20 proteins with the lowest adjusted p-value (False Discovery Rate).
+The color indicates the relative change of that protein.
+The dendrogram on the left shows the correlation between proteins, closely branched proteins are likely part of the same biological process.
+The dendrogram on the top shows how similar the protein profile of the patients are. Closely branched patients have similar protein signatures.
+The height of a branch indicates its "closeness" to the next branch.
+
+### Boxplot
+```{r boxplot, class.source = "fold-hide", fig.width=12, fig.height=10, dpi=300}
+# --- STEP 0: Selection Logic ---
+top_pval <- de_results %>% slice_min(order_by = adj.P.Val, n = 5) %>% pull(Protein)
+top_fc   <- de_results %>% slice_max(order_by = abs(logFC), n = 5) %>% pull(Protein)
+top_score <- de_results %>% slice_max(order_by = label_score, n = 5) %>% pull(Protein)
+protein_list <- unique(c(top_pval, top_fc, top_score))
+
+# --- STEP 1: Create plot_data_long from scratch ---
+# This ensures the object exists in the local environment
+plot_data_long <- Olink_data[protein_list, ] %>%
+  as.data.frame() %>%
+  rownames_to_column("Protein") %>%
+  # Convert to long format (Barcode matches your Clinical_data column)
+  pivot_longer(-Protein, names_to = "Barcode", values_to = "NPX") %>%
+  # Merge with clinical metadata
+  left_join(Clinical_data, by = "Barcode")
+
+# --- STEP 2: Create the multi-line labels ---
+plot_labels <- de_results %>%
+  filter(Protein %in% protein_list) %>%
+  mutate(Facet_Label = paste0(
+    Protein, 
+    "\nadj.P: ", formatC(adj.P.Val, format = "e", digits = 2),
+    "\nlog2FC: ", round(logFC, 2),
+    "\nScore: ", round(label_score, 2)
+  )) %>%
+  select(Protein, Facet_Label)
+
+# --- STEP 3: Add labels to the data ---
+plot_data_long <- plot_data_long %>%
+  left_join(plot_labels, by = "Protein")
+
+# --- STEP 4: Generate the Grid ---
+ggplot(plot_data_long, aes(x = Group, y = NPX, fill = Group)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.7, color = "black", size = 0.3) +
+  geom_jitter(width = 0.2, size = 1, alpha = 0.4, color = "grey20") +
+  facet_wrap(~Facet_Label, scales = "free_y", ncol = 4) + 
+  theme_bw() +
+  scale_fill_manual(values = c("SSc-PAH" = "firebrick3", "SSc-noPAH" = "dodgerblue3")) +
+  theme(
+    legend.position = "none",
+    strip.text = element_text(size = 8, face = "bold", lineheight = 1.1),
+    strip.background = element_rect(fill = "grey95"),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "Key Differential Proteins: SSc-PAH vs SSc-noPAH",
+    subtitle = "Metrics: Adjusted P-value, Log2 Fold Change, and Combined Score",
+    x = NULL, 
+    y = "Normalized Protein Expression (NPX)"
+  )
+```
+
+
+
+
