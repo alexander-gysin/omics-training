@@ -57,7 +57,7 @@ library(pheatmap)         # Quick and clean heatmaps to visualize clusters after
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)
 ```
 
-#Data preparation & QC
+# Data preparation & QC
 ## Initialization
 ### Read data
 ```{r read data}
@@ -95,7 +95,7 @@ rownames(Olink_data) <- str_remove(rownames(Olink_data), "_.*")
 sum(is.na(Olink_data))
 ```
 
-#Results
+# Results
 ## PCA Analysis {.tabset}
 
 ### PCA Analysis
@@ -127,7 +127,7 @@ p_pca <- fviz_pca_ind(pca_res,
 p_pca
 ```
 
-###Visualizing contribution by protein in a simple contribution plot
+### Visualizing contribution by protein in a simple contribution plot
 ```{r top 10 proteins}
 # manually set a common limit
 common_limit <- 0.5
@@ -187,7 +187,8 @@ Interpretatio of this Loading Plot:
 2.  They have a positive correlation with PC1 and a negative correlation with PC2
 
 ## Differential Expression Analysis {.tabset}
-###Create the Design Matrix
+
+### Create the Design Matrix
 ```{r create design matrix}
 # 1. Clean the 'Group' column in your metadata directly
 # This replaces hyphens/spaces with dots (e.g., SSc-PAH -> SSc.PAH)
