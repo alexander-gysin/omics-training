@@ -537,15 +537,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreef9cf585f1a3595cc77adea9066b844b8d42e2f64targetblankf9cf585a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree0eada49f4656cef4fa3b19f04895ec010bcd1903targetblank0eada49a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/f9cf585f1a3595cc77adea9066b844b8d42e2f64" target="_blank">f9cf585</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/0eada49f4656cef4fa3b19f04895ec010bcd1903" target="_blank">0eada49</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreef9cf585f1a3595cc77adea9066b844b8d42e2f64targetblankf9cf585a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree0eada49f4656cef4fa3b19f04895ec010bcd1903targetblank0eada49a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/f9cf585f1a3595cc77adea9066b844b8d42e2f64" target="_blank">f9cf585</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/0eada49f4656cef4fa3b19f04895ec010bcd1903" target="_blank">0eada49</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -572,6 +572,7 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
     Ignored:    output/Olink-GB/
 
 Untracked files:
@@ -625,6 +626,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/0eada49f4656cef4fa3b19f04895ec010bcd1903/analysis/Olink-GB.Rmd" target="_blank">0eada49</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/cbd4b89948a69630b8cdee6f3deb815e89b94354/docs/Olink-GB.html" target="_blank">cbd4b89</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -975,12 +1010,8 @@ wflow_publish("analysis/Olink-GB.Rmd")
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>This serves as training to analyze Olink data</p>
-</div>
-<div id="setup" class="section level1">
-<h1>Setup</h1>
-<div id="knitr-configuration" class="section level3">
-<h3>knitr configuration</h3>
-</div>
+<div id="setup" class="section level2 tabset">
+<h2 class="tabset">Setup</h2>
 <div id="directories" class="section level3">
 <h3>Directories</h3>
 <pre class="r"><code># Get current file name to make folder
@@ -993,6 +1024,22 @@ if (!dir.exists(here::here(&quot;docs&quot;, &quot;figure&quot;))) dir.create(he
 
 output_dir_figs &lt;- here::here(&quot;docs&quot;, &quot;figure&quot;, paste0(current_file, &quot;.Rmd&quot;))
 if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)</code></pre>
+</div>
+<div id="knitr-configuration" class="section level3">
+<h3>knitr configuration</h3>
+<pre class="r"><code>knitr::opts_chunk$set(warning = FALSE)
+
+knitr::opts_chunk$set(message = FALSE)
+
+knitr::opts_chunk$set(cache = FALSE)
+
+knitr::opts_chunk$set(dev = c(&quot;png&quot;, &quot;pdf&quot;),
+                      dpi = 300, 
+                      fig.width = 10,
+                      fig.heigt = 8,
+                      out.width = &quot;100%&quot;,
+                      fig.path = paste0(output_dir_figs, &quot;/&quot;),
+                      fig.align = &quot;center&quot;)</code></pre>
 </div>
 <div id="packages" class="section level3">
 <h3>Packages</h3>
@@ -1014,6 +1061,19 @@ library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano
 library(pheatmap)         # Quick and clean heatmaps to visualize clusters after PCA
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)</code></pre>
 </div>
+<div id="ggplot-global-theme" class="section level3">
+<h3>ggplot global theme</h3>
+<pre class="r"><code># Set the default ggplot theme globally
+theme_set(
+  theme_bw(base_size = 12) + 
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face = &quot;bold&quot;, size = 14),
+    strip.background = element_rect(fill = &quot;grey95&quot;)
+  )
+)</code></pre>
+</div>
+</div>
 </div>
 <div id="data-preparation-qc" class="section level1">
 <h1>Data preparation &amp; QC</h1>
@@ -1026,7 +1086,7 @@ Clinical_data &lt;- read_excel(here::here(&quot;data&quot;, &quot;Metadata_Olink
 </div>
 <div id="define-color-palette" class="section level3">
 <h3>Define color palette</h3>
-<pre class="r"><code>my_palette &lt;- colorRampPalette(c(&quot;navy&quot;, &quot;whitesmoke&quot;, &quot;indianred&quot;))(100)</code></pre>
+<pre class="r"><code>my_palette &lt;- colorRampPalette(c(&quot;navy&quot;, &quot;whitesmoke&quot;, &quot;firebrick3&quot;))(100)</code></pre>
 </div>
 </div>
 <div id="data-clean-up" class="section level2">
@@ -1066,13 +1126,17 @@ class="section level3">
 pca_res &lt;- PCA(t(Olink_data), graph = FALSE)</code></pre>
 </div>
 </div>
-<div id="pca-visualization" class="section level2 tabset">
-<h2 class="tabset">PCA visualization</h2>
+<div id="pca-visualization" class="section level2">
+<h2>PCA visualization</h2>
 <div id="plotting-eigenvalues" class="section level3">
 <h3>Plotting Eigenvalues</h3>
 <pre class="r"><code>p_scree &lt;- fviz_eig(pca_res, addlabels = TRUE, barfill = &quot;navy&quot;, barcolor = &quot;navy&quot;)
 p_scree</code></pre>
-<p><img src="figure/Olink-GB.Rmd/eigenvalue%20vis-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<img src="figure/Olink-GB.Rmd/eigenvalue%20vis-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-eigenvalue-vis-1">
 Past versions of "eigenvalue vis-1.png"
@@ -1117,7 +1181,7 @@ variance, which is deemed acceptable.</p>
 </div>
 <div id="plotting-pca-by-group" class="section level3">
 <h3>Plotting PCA by Group</h3>
-<pre class="r"><code># 2. PCA Plot colored by Group
+<pre class="r fold-hide"><code># 2. PCA Plot colored by Group
 p_pca &lt;- fviz_pca_ind(pca_res,
              label = &quot;none&quot;, # Hide sample names for clarity
              habillage = as.factor(Clinical_data$Group), 
@@ -1127,7 +1191,11 @@ p_pca &lt;- fviz_pca_ind(pca_res,
              theme_minimal() +
              labs(title = &quot;Proteomics PCA&quot;)
 p_pca</code></pre>
-<p><img src="figure/Olink-GB.Rmd/PCA%20Plot%20by%20group-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<img src="figure/Olink-GB.Rmd/PCA%20Plot%20by%20group-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-PCA-Plot-by-group-1">
 Past versions of "PCA Plot by group-1.png"
@@ -1171,7 +1239,7 @@ id="visualizing-contribution-by-protein-in-a-simple-contribution-plot"
 class="section level3">
 <h3>Visualizing contribution by protein in a simple contribution
 plot</h3>
-<pre class="r"><code># manually set a common limit
+<pre class="r fold-hide"><code># manually set a common limit
 common_limit &lt;- 0.5
 # Visualize the top 10 proteins contributing to PC1
 p_top_proteins_PD1 &lt;- fviz_contrib(pca_res, choice = &quot;var&quot;, axes = 1, top = 10, fill = &quot;navy&quot;, color = &quot;navy&quot;, sort.val = &quot;asc&quot;) +
@@ -1191,7 +1259,11 @@ p_top_proteins_PD2 &lt;- fviz_contrib(pca_res, choice = &quot;var&quot;, axes = 
 
 # / displays the plots in vertical order
 p_top_proteins_PD1 / p_top_proteins_PD2</code></pre>
-<p><img src="figure/Olink-GB.Rmd/top%2010%20proteins-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<img src="figure/Olink-GB.Rmd/top%2010%20proteins-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-top-10-proteins-1">
 Past versions of "top 10 proteins-1.png"
@@ -1229,7 +1301,7 @@ alexander-gysin
 </table>
 </div>
 </div>
-<pre class="r"><code>#alternatively flip the plot horizontally to display more bars </code></pre>
+<pre class="r fold-hide"><code>#alternatively flip the plot horizontally to display more bars </code></pre>
 <p>This plot shows the top ten contributing proteins in both PD1 and
 PD2. The dashed line at 0.1% represents the average contribution which
 is expected in a Principal Component Analysis featuring aproximately
@@ -1238,7 +1310,7 @@ is expected in a Principal Component Analysis featuring aproximately
 <div id="visualizing-contribution-by-protein-in-a-loading-plot"
 class="section level3">
 <h3>Visualizing contribution by protein in a loading plot</h3>
-<pre class="r"><code># Variable Correlation Plot
+<pre class="r fold-hide"><code># Variable Correlation Plot
 p_loading &lt;- fviz_pca_var(pca_res, 
                           # Only show the top 20 proteins by &#39;contribution&#39; 
                           # (This keeps the plot clean)
@@ -1257,7 +1329,11 @@ p_loading &lt;- fviz_pca_var(pca_res,
   labs(title = &quot;Loading Plot: Top 20 Proteins&quot;,
        subtitle = &quot;Direction shows correlation with PC1 (x) and PC2 (y)&quot;)
 p_loading</code></pre>
-<p><img src="figure/Olink-GB.Rmd/loading%20plot-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<img src="figure/Olink-GB.Rmd/loading%20plot-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-loading-plot-1">
 Past versions of "loading plot-1.png"
@@ -1359,7 +1435,7 @@ class="section level2">
 <h2>Visualization of the Differential Analysis</h2>
 <div id="volcanoplot" class="section level3">
 <h3>Volcanoplot</h3>
-<pre class="r"><code># --- 1. DATA PREPARATION ---
+<pre class="r fold-hide"><code># --- 1. DATA PREPARATION ---
 # Calculate the exact raw p-value that hits the FDR 0.05 threshold
 p_cutoff &lt;- de_results %&gt;% 
   filter(adj.P.Val &lt; 0.05) %&gt;% 
@@ -1386,7 +1462,7 @@ top_down &lt;- de_results %&gt;%
   slice_max(order_by = label_score, n = 10)
 
 top_labels &lt;- bind_rows(top_up, top_down)</code></pre>
-<pre class="r"><code># --- 2. THE FINAL PLOT ---
+<pre class="r fold-hide"><code># --- 2. THE FINAL PLOT ---
 ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
   geom_point(alpha = 0.4, size = 1.5) +
   scale_color_manual(values = c(&quot;Down-regulated&quot; = &quot;navy&quot;, 
@@ -1427,7 +1503,11 @@ ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
            fill = &quot;white&quot;,        # White background prevents &quot;crashing&quot; with grid lines
            label.size = NA,       # Removes the box border
            fontface = &quot;plain&quot;)</code></pre>
-<p><img src="figure/Olink-GB.Rmd/volcano%20plotting-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<img src="figure/Olink-GB.Rmd/volcano%20plotting-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-volcano-plotting-1">
 Past versions of "volcano plotting-1.png"
@@ -1480,6 +1560,101 @@ It helps you check if your significant results only happen in very
 low-abundance proteins (which can be noisy) or high-abundance ones.
 Ideally, your “red dots” should be spread across the x-axis.</p></li>
 </ol>
+</div>
+<div id="heatmap" class="section level3">
+<h3>Heatmap</h3>
+<pre class="r fold-hide"><code># 1. Get the names of the top 30 proteins by significance
+top_hits &lt;- de_results %&gt;% 
+  slice_min(order_by = adj.P.Val, n = 20) %&gt;% 
+  pull(Protein)
+
+# 2. Subset your original data
+# Assumes Olink_data has proteins as rows and sample IDs as columns
+plot_matrix &lt;- Olink_data[top_hits, ]
+
+# 3. Create annotation for the columns (samples)
+annotation_col &lt;- data.frame(Status = Clinical_data$Group)
+rownames(annotation_col) &lt;- colnames(Olink_data)
+
+# 4. Plot
+pheatmap(plot_matrix, 
+         scale = &quot;row&quot;,                      # Normalize by protein to see relative changes
+         annotation_col = annotation_col, 
+         show_colnames = FALSE,
+         main = &quot;Top 20 Proteins: SSc-PAH vs SSc-noPAH&quot;,
+         color = my_palette)</code></pre>
+<img src="figure/Olink-GB.Rmd/heatmap-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
+<p>This graph shows the 20 proteins with the lowest adjusted p-value
+(False Discovery Rate). The color indicates the relative change of that
+protein. The dendrogram on the left shows the correlation between
+proteins, closely branched proteins are likely part of the same
+biological process. The dendrogram on the top shows how similar the
+protein profile of the patients are. Closely branched patients have
+similar protein signatures. The height of a branch indicates its
+“closeness” to the next branch.</p>
+</div>
+<div id="boxplot" class="section level3">
+<h3>Boxplot</h3>
+<pre class="r fold-hide"><code># --- STEP 0: Selection Logic ---
+top_pval &lt;- de_results %&gt;% slice_min(order_by = adj.P.Val, n = 5) %&gt;% pull(Protein)
+top_fc   &lt;- de_results %&gt;% slice_max(order_by = abs(logFC), n = 5) %&gt;% pull(Protein)
+top_score &lt;- de_results %&gt;% slice_max(order_by = label_score, n = 5) %&gt;% pull(Protein)
+protein_list &lt;- unique(c(top_pval, top_fc, top_score))
+
+# --- STEP 1: Create plot_data_long from scratch ---
+# This ensures the object exists in the local environment
+plot_data_long &lt;- Olink_data[protein_list, ] %&gt;%
+  as.data.frame() %&gt;%
+  rownames_to_column(&quot;Protein&quot;) %&gt;%
+  # Convert to long format (Barcode matches your Clinical_data column)
+  pivot_longer(-Protein, names_to = &quot;Barcode&quot;, values_to = &quot;NPX&quot;) %&gt;%
+  # Merge with clinical metadata
+  left_join(Clinical_data, by = &quot;Barcode&quot;)
+
+# --- STEP 2: Create the multi-line labels ---
+plot_labels &lt;- de_results %&gt;%
+  filter(Protein %in% protein_list) %&gt;%
+  mutate(Facet_Label = paste0(
+    Protein, 
+    &quot;\nadj.P: &quot;, formatC(adj.P.Val, format = &quot;e&quot;, digits = 2),
+    &quot;\nlog2FC: &quot;, round(logFC, 2),
+    &quot;\nScore: &quot;, round(label_score, 2)
+  )) %&gt;%
+  select(Protein, Facet_Label)
+
+# --- STEP 3: Add labels to the data ---
+plot_data_long &lt;- plot_data_long %&gt;%
+  left_join(plot_labels, by = &quot;Protein&quot;)
+
+# --- STEP 4: Generate the Grid ---
+ggplot(plot_data_long, aes(x = Group, y = NPX, fill = Group)) +
+  geom_boxplot(outlier.shape = NA, alpha = 0.7, color = &quot;black&quot;, size = 0.3) +
+  geom_jitter(width = 0.2, size = 1, alpha = 0.4, color = &quot;grey20&quot;) +
+  facet_wrap(~Facet_Label, scales = &quot;free_y&quot;, ncol = 4) + 
+  theme_bw() +
+  scale_fill_manual(values = c(&quot;SSc-PAH&quot; = &quot;firebrick3&quot;, &quot;SSc-noPAH&quot; = &quot;dodgerblue3&quot;)) +
+  theme(
+    legend.position = &quot;none&quot;,
+    strip.text = element_text(size = 8, face = &quot;bold&quot;, lineheight = 1.1),
+    strip.background = element_rect(fill = &quot;grey95&quot;),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = &quot;Key Differential Proteins: SSc-PAH vs SSc-noPAH&quot;,
+    subtitle = &quot;Metrics: Adjusted P-value, Log2 Fold Change, and Combined Score&quot;,
+    x = NULL, 
+    y = &quot;Normalized Protein Expression (NPX)&quot;
+  )</code></pre>
+<img src="figure/Olink-GB.Rmd/boxplot-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1611,7 +1786,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeCodeFolding("hide" === "show");
+  window.initializeCodeFolding("show" === "show");
 });
 </script>
 
