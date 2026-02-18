@@ -377,7 +377,7 @@ div.tocify {
 <h4 class="author">alexander-gysin (<a
 href="mailto:alexander.gysin@usz.ch"
 class="email">alexander.gysin@usz.ch</a>)</h4>
-<h4 class="date">17 February, 2026</h4>
+<h4 class="date">18 February, 2026</h4>
 
 </div>
 
@@ -406,7 +406,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-02-17
+<strong>Last updated:</strong> 2026-02-18
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -537,15 +537,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree632763f2ea5f491d0af0fb371f7b885ce2effa59targetblank632763fa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree48ac657607c15ead3162113aec9a8282d3f4072dtargetblank48ac657a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/632763f2ea5f491d0af0fb371f7b885ce2effa59" target="_blank">632763f</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/48ac657607c15ead3162113aec9a8282d3f4072d" target="_blank">48ac657</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree632763f2ea5f491d0af0fb371f7b885ce2effa59targetblank632763fa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree48ac657607c15ead3162113aec9a8282d3f4072dtargetblank48ac657a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -555,7 +555,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/632763f2ea5f491d0af0fb371f7b885ce2effa59" target="_blank">632763f</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/48ac657607c15ead3162113aec9a8282d3f4072d" target="_blank">48ac657</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -572,15 +572,16 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
     Ignored:    output/Olink-GB/
 
 Untracked files:
-    Untracked:  analysis/Olink_RV_dysf.Rmd
+    Untracked:  code/Olink-GB/
 
 Unstaged changes:
     Modified:   .gitignore
     Modified:   analysis/_site.yml
-    Modified:   analysis/first-analysis.Rmd
+    Deleted:    analysis/first-analysis.Rmd
 
 </code></pre>
 <p>
@@ -625,6 +626,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/48ac657607c15ead3162113aec9a8282d3f4072d/analysis/Olink-GB.Rmd" target="_blank">48ac657</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-18
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/cb4c6c9fa1e1879d68971ef4d5a5547b303dd84a/docs/Olink-GB.html" target="_blank">cb4c6c9</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -842,8 +877,11 @@ wflow_publish("analysis/Olink-GB.Rmd")
 </div>
 <div id="setup" class="section level1">
 <h1>Setup</h1>
-<div id="directories-and-packages" class="section level3">
-<h3>Directories and Packages</h3>
+<div id="knitr-configuration" class="section level3">
+<h3>knitr configuration</h3>
+</div>
+<div id="directories" class="section level3">
+<h3>Directories</h3>
 <pre class="r"><code># Get current file name to make folder
 current_file &lt;- &quot;Olink-GB&quot;
 #Output paths
@@ -853,9 +891,11 @@ if (!dir.exists(output_dir_data)) dir.create(output_dir_data)
 if (!dir.exists(here::here(&quot;docs&quot;, &quot;figure&quot;))) dir.create(here::here(&quot;docs&quot;, &quot;figure&quot;))
 
 output_dir_figs &lt;- here::here(&quot;docs&quot;, &quot;figure&quot;, paste0(current_file, &quot;.Rmd&quot;))
-if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)
-
-# Utility Packages
+if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)</code></pre>
+</div>
+<div id="packages" class="section level3">
+<h3>Packages</h3>
+<pre class="r"><code># Utility Packages
 library(tidyverse)  # Contains dplyr (data manipulation), readr, tibble (modern df), ggplot2 and more
 library(here)       # Uses the project root for file paths; stops &quot;File not found&quot; errors on other PCs
 library(magrittr)   # Provides the pipe operator (%&gt;%) to make your code readable
@@ -865,20 +905,273 @@ library(readxl)     # Used to load excel files
 # Differential Expression &amp; PCA Packages
 library(limma)            # The gold standard for linear modeling and DEA (works for Olink/Proteomics)
 library(stats)            # Built-in R package; provides prcomp() for PCA (no need to load explicitly)
+library(FactoMineR)       # Multi Factor Analysis for multi-omics, calculates the contribution to the PCA
+library(factoextra)       # PCA Visualization
 
 # Visualization Packages
 library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
 library(pheatmap)         # Quick and clean heatmaps to visualize clusters after PCA
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)</code></pre>
-</div>
-<div id="read-data" class="section level3">
-<h3>Read data</h3>
+<p>#Data preparation &amp; QC ## Initialization ### Read data</p>
 <pre class="r"><code>Olink_data &lt;- read.csv(here::here(&quot;data&quot;, &quot;quant.csv&quot;), sep = &quot;;&quot;)
 Clinical_data &lt;- read_excel(here::here(&quot;data&quot;, &quot;Metadata_Olink_PL.xlsx&quot;))</code></pre>
 </div>
 <div id="define-color-palette" class="section level3">
 <h3>Define color palette</h3>
 <pre class="r fold-show"><code>my_palette &lt;- colorRampPalette(c(&quot;navy&quot;, &quot;whitesmoke&quot;, &quot;indianred&quot;))(100)</code></pre>
+</div>
+<div id="data-clean-up" class="section level2">
+<h2>Data clean-up</h2>
+<div id="formating-the-olink-file" class="section level3">
+<h3>Formating the Olink file</h3>
+<p>Protein names to rownames in the Olink file</p>
+<pre class="r"><code>Olink_data &lt;- Olink_data %&gt;%
+  column_to_rownames(&quot;SampleID&quot;) # Replace &quot;ProteinID&quot; with your actual column name</code></pre>
+</div>
+<div id="order-olink-data-according-to-metadata" class="section level3">
+<h3>Order Olink data according to metadata</h3>
+<pre class="r"><code>Olink_data &lt;- Olink_data[, Clinical_data$Barcode]
+
+# Check if column names match metadata barcodes exactly
+stopifnot(all(colnames(Olink_data) == Clinical_data$Barcode))</code></pre>
+</div>
+<div id="remove-the-olink_id-from-the-rownames" class="section level3">
+<h3>Remove the Olink_ID from the rownames</h3>
+<pre class="r"><code>rownames(Olink_data) &lt;- str_remove(rownames(Olink_data), &quot;_.*&quot;)</code></pre>
+</div>
+<div id="check-for-missing-values-in-the-olink-file"
+class="section level3">
+<h3>Check for missing values in the Olink file</h3>
+<pre class="r"><code>sum(is.na(Olink_data))</code></pre>
+<pre><code>[1] 0</code></pre>
+<p>#Results ## PCA Analysis {.tabset} ### PCA Analysis</p>
+<pre class="r"><code># Note: PCA functions usually expect samples in ROWS, so we transpose with t()
+pca_res &lt;- PCA(t(Olink_data), graph = FALSE)</code></pre>
+</div>
+</div>
+<div id="pca-visualization" class="section level2">
+<h2>PCA visualization</h2>
+<div id="plotting-eigenvalues" class="section level3">
+<h3>Plotting Eigenvalues</h3>
+<pre class="r"><code>p_scree &lt;- fviz_eig(pca_res, addlabels = TRUE, barfill = &quot;navy&quot;, barcolor = &quot;navy&quot;)
+p_scree</code></pre>
+<p><img src="figure/Olink-GB.Rmd/eigenvalue%20vis-1.png" width="2100" style="display: block; margin: auto;" />
+Ths plot shows the Eigenvalues of the individual Principal Component.
+The higher the percentage the more variance is explained by the
+Principal Component. PC1 and PC2 cumulatively explain 37.1% of the
+variance, which is deemed acceptable.</p>
+</div>
+<div id="plotting-pca-by-group" class="section level3">
+<h3>Plotting PCA by Group</h3>
+<pre class="r"><code># 2. PCA Plot colored by Group
+p_pca &lt;- fviz_pca_ind(pca_res,
+             label = &quot;none&quot;, # Hide sample names for clarity
+             habillage = as.factor(Clinical_data$Group), 
+             palette = c(&quot;indianred&quot;, &quot;navy&quot;),
+             addEllipses = TRUE, 
+             invisible = &quot;quali&quot;) +
+             theme_minimal() +
+             labs(title = &quot;Proteomics PCA&quot;)
+p_pca</code></pre>
+<p><img src="figure/Olink-GB.Rmd/PCA%20Plot%20by%20group-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>###Visualizing contribution by protein in a simple contribution
+plot</p>
+<pre class="r"><code># manually set a common limit
+common_limit &lt;- 0.5
+# Visualize the top 10 proteins contributing to PC1
+p_top_proteins_PD1 &lt;- fviz_contrib(pca_res, choice = &quot;var&quot;, axes = 1, top = 10, fill = &quot;navy&quot;, color = &quot;navy&quot;, sort.val = &quot;asc&quot;) +
+  theme_minimal() +
+  labs(title = &quot;Top 10 Proteins Contributing to PC1&quot;,
+       x = &quot;Proteins&quot;,
+       y = &quot;Contribution [%]&quot;)+
+  coord_flip(ylim = c(0, common_limit)) # Flips the plot and sets the scale
+
+# Visualize the top 10 proteins contributing to PC2
+p_top_proteins_PD2 &lt;- fviz_contrib(pca_res, choice = &quot;var&quot;, axes = 2, top = 10, fill = &quot;navy&quot;, color = &quot;navy&quot;, sort.val = &quot;asc&quot;) +
+  theme_minimal() +
+  labs(title = &quot;Top 10 Proteins Contributing to PC2&quot;,
+       x = &quot;Proteins&quot;,
+       y = &quot;Contribution [%]&quot;)+
+  coord_flip(ylim = c(0, common_limit)) # Flips the plot and sets the scale
+
+# / displays the plots in vertical order
+p_top_proteins_PD1 / p_top_proteins_PD2</code></pre>
+<p><img src="figure/Olink-GB.Rmd/top%2010%20proteins-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#alternatively flip the plot horizontally to display more bars </code></pre>
+<p>This plot shows the top ten contributing proteins in both PD1 and
+PD2. The dashed line at 0.1% represents the average contribution which
+is expected in a Principal Component Analysis featuring aproximately
+1000 proteins, anything above is considered a contributor.</p>
+</div>
+<div id="visualizing-contribution-by-protein-in-a-loading-plot"
+class="section level3">
+<h3>Visualizing contribution by protein in a loading plot</h3>
+<pre class="r"><code># Variable Correlation Plot
+p_loading &lt;- fviz_pca_var(pca_res, 
+                          # Only show the top 20 proteins by &#39;contribution&#39; 
+                          # (This keeps the plot clean)
+                          select.var = list(contrib = 20), 
+                          
+                          # Color the proteins by their contribution level
+                          col.var = &quot;contrib&quot;, 
+                          gradient.cols = c(&quot;navy&quot;, &quot;white&quot;, &quot;indianred&quot;),
+                          
+                          # Avoid text labels overlapping
+                          repel = TRUE, 
+                          
+                          # Visual aesthetics
+                          alpha.var = &quot;contrib&quot;) + 
+  theme_minimal() +
+  labs(title = &quot;Loading Plot: Top 20 Proteins&quot;,
+       subtitle = &quot;Direction shows correlation with PC1 (x) and PC2 (y)&quot;)
+p_loading</code></pre>
+<p><img src="figure/Olink-GB.Rmd/loading%20plot-1.png" width="2100" style="display: block; margin: auto;" />
+How to interpret the Loading Plot: 1. Horizontal Arrows: These proteins
+are purely PC1 drivers. If they point to the right, they are high in
+whatever Group is on the right of your PCA. 2. Vertical Arrows: These
+proteins are driving PC2. They don’t differentiate your PC1 groups much,
+but they show a separate trend (maybe Age or Sex). 3. Diagonal Arrows:
+These proteins contribute to both PC1 and PC2. 4. Clusters: If you see a
+“fan” of 5 proteins all pointing in the exact same direction, those
+proteins likely belong to the same biological pathway (e.g., a group of
+inflammatory cytokines all rising together).</p>
+<p>Interpretatio of this Loading Plot: 1. Since all proteins “point” in
+the same direction they are all correlated and likely belong to the same
+biological process 2. They have a positive correlation with PC1 and a
+negative correlation with PC2</p>
+</div>
+</div>
+<div id="differential-expression-analysis"
+class="section level2 tabset">
+<h2 class="tabset">Differential Expression Analysis</h2>
+<p>###Create the Design Matrix</p>
+<pre class="r"><code># 1. Clean the &#39;Group&#39; column in your metadata directly
+# This replaces hyphens/spaces with dots (e.g., SSc-PAH -&gt; SSc.PAH)
+Clinical_data$Group_Clean &lt;- make.names(Clinical_data$Group)
+
+# 2. Re-create the group_factor from the clean column
+group_factor &lt;- as.factor(Clinical_data$Group_Clean)
+
+# 3. Build the design matrix
+design &lt;- model.matrix(~ 0 + group_factor)
+
+# 4. Rename columns to match the clean levels (SSc.PAH, SSc.noPAH)
+colnames(design) &lt;- levels(group_factor)</code></pre>
+<div id="define-the-comparison" class="section level3">
+<h3>Define the comparison</h3>
+<pre class="r"><code># 5. Define the contrast
+# Syntax: makeContrasts(Group1 - Group2, levels = design)
+contrast.matrix &lt;- makeContrasts(SSc.PAH - SSc.noPAH, levels = design)</code></pre>
+</div>
+<div id="analysis" class="section level3">
+<h3>Analysis</h3>
+<pre class="r"><code># Fit the model
+fit &lt;- lmFit(Olink_data, design)
+fit2 &lt;- contrasts.fit(fit, contrast.matrix)
+fit2 &lt;- eBayes(fit2)
+
+# 1. Get the results from limma
+de_results &lt;- topTable(fit2, coef = 1, number = Inf, sort.by = &quot;P&quot;) %&gt;%
+  rownames_to_column(&quot;Protein&quot;)
+
+# 2. CREATE THE MISSING COLUMN (The Fix)
+de_results &lt;- de_results %&gt;%
+  mutate(Significance = case_when(
+    adj.P.Val &lt; 0.05 &amp; logFC &gt; 0.5  ~ &quot;Up-regulated&quot;,
+    adj.P.Val &lt; 0.05 &amp; logFC &lt; -0.5 ~ &quot;Down-regulated&quot;,
+    TRUE                          ~ &quot;Not Significant&quot;
+  ))</code></pre>
+</div>
+</div>
+<div id="visualization-of-the-differential-analysis"
+class="section level2">
+<h2>Visualization of the Differential Analysis</h2>
+<div id="volcanoplot" class="section level3">
+<h3>Volcanoplot</h3>
+<pre class="r"><code># --- 1. DATA PREPARATION ---
+# Calculate the exact raw p-value that hits the FDR 0.05 threshold
+p_cutoff &lt;- de_results %&gt;% 
+  filter(adj.P.Val &lt; 0.05) %&gt;% 
+  pull(P.Value) %&gt;% 
+  max()
+
+# Create a &#39;Score&#39; to identify the &quot;top corners&quot; (High FC * High Significance)
+# This ensures we label the most extreme points in the top-left and top-right.
+de_results &lt;- de_results %&gt;%
+  mutate(label_score = abs(logFC) * -log10(P.Value))
+
+# Identify top 10 Up and top 10 Down based on this combined score
+top_up &lt;- de_results %&gt;%
+  filter(Significance == &quot;Up-regulated&quot;) %&gt;%
+  slice_max(order_by = label_score, n = 10)
+
+top_down &lt;- de_results %&gt;%
+  filter(Significance == &quot;Down-regulated&quot;) %&gt;%
+  slice_min(order_by = logFC, n = 10) # Using logFC here ensures we stay on the left side
+
+# Re-selecting top_down based on score but ensuring they are actually down-regulated
+top_down &lt;- de_results %&gt;%
+  filter(Significance == &quot;Down-regulated&quot;) %&gt;%
+  slice_max(order_by = label_score, n = 10)
+
+top_labels &lt;- bind_rows(top_up, top_down)</code></pre>
+<pre class="r"><code># --- 2. THE FINAL PLOT ---
+ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
+  geom_point(alpha = 0.4, size = 1.5) +
+  scale_color_manual(values = c(&quot;Down-regulated&quot; = &quot;navy&quot;, 
+                                &quot;Not Significant&quot; = &quot;grey85&quot;, 
+                                &quot;Up-regulated&quot; = &quot;indianred&quot;)) +
+  
+  # Clean, small text labels
+  geom_text_repel(data = top_labels, 
+                  aes(label = Protein),
+                  size = 2.5,
+                  color = &quot;black&quot;,
+                  box.padding = 0.5,
+                  point.padding = 0.2,
+                  min.segment.length = 0,
+                  segment.size = 0.2,
+                  segment.color = &quot;grey30&quot;,
+                  max.overlaps = Inf) +
+  
+  theme_minimal() +
+  labs(title = &quot;SSc.PAH vs SSc.noPAH: Top Hits&quot;,
+       subtitle = &quot;Labeled by multiplied Significance and Fold Change&quot;,
+       x = &quot;Log2 Fold Change&quot;,
+       y = &quot;-log10(Raw P-value)&quot;) +
+  
+  # Guidelines
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = &quot;dotted&quot;, color = &quot;grey40&quot;) +
+  geom_hline(yintercept = -log10(p_cutoff), linetype = &quot;dashed&quot;, color = &quot;grey40&quot;, alpha = 0.7) +
+  
+  # Move FDR Label to the far LEFT to avoid crashing with the &quot;Up-regulated&quot; top corner
+  annotate(&quot;label&quot;, 
+           x = min(de_results$logFC), 
+           y = -log10(p_cutoff), 
+           label = &quot;FDR &lt; 0.05&quot;, 
+           hjust = 0.2,             # Align to the left of the x-coordinate
+           vjust = 1.4, 
+           size = 2.5, 
+           color = &quot;black&quot;, 
+           fill = &quot;white&quot;,        # White background prevents &quot;crashing&quot; with grid lines
+           label.size = NA,       # Removes the box border
+           fontface = &quot;plain&quot;)</code></pre>
+<p><img src="figure/Olink-GB.Rmd/volcano%20plotting-1.png" width="2100" style="display: block; margin: auto;" /></p>
+<p>continue with: 1. The Heatmap (Sample Clustering) A heatmap is
+essential because it tells you if your “top hits” actually succeed in
+grouping your patients correctly. If the SSc-PAH patients don’t cluster
+together, your differential proteins might be driven by outliers.</p>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Boxplots (The “Deep Dive”) Once you’ve identified your #1 protein
+(e.g., the one with the highest “score” from our last plot), you need to
+see the raw data distribution. A boxplot shows you the spread, the
+median, and if there are any outliers.</p></li>
+<li><p>MA Plot (The “Sanity Check”) An MA plot looks at the relationship
+between the average expression (A) and the log fold change (M). Purpose:
+It helps you check if your significant results only happen in very
+low-abundance proteins (which can be noisy) or high-abundance ones.
+Ideally, your “red dots” should be spread across the x-axis.</p></li>
+</ol>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -912,27 +1205,44 @@ attached base packages:
 
 other attached packages:
  [1] patchwork_1.3.2        pheatmap_1.0.13        EnhancedVolcano_1.28.2
- [4] ggrepel_0.9.6          limma_3.66.0           readxl_1.4.5          
- [7] RColorBrewer_1.1-3     magrittr_2.0.4         here_1.0.2            
-[10] lubridate_1.9.4        forcats_1.0.1          stringr_1.5.2         
-[13] dplyr_1.1.4            purrr_1.1.0            readr_2.1.5           
-[16] tidyr_1.3.1            tibble_3.3.0           ggplot2_4.0.0         
-[19] tidyverse_2.0.0        workflowr_1.7.2       
+ [4] ggrepel_0.9.6          factoextra_1.0.7       FactoMineR_2.13       
+ [7] limma_3.66.0           readxl_1.4.5           RColorBrewer_1.1-3    
+[10] magrittr_2.0.4         here_1.0.2             lubridate_1.9.4       
+[13] forcats_1.0.1          stringr_1.5.2          dplyr_1.1.4           
+[16] purrr_1.1.0            readr_2.1.5            tidyr_1.3.1           
+[19] tibble_3.3.0           ggplot2_4.0.0          tidyverse_2.0.0       
+[22] workflowr_1.7.2       
 
 loaded via a namespace (and not attached):
- [1] sass_0.4.10       generics_0.1.4    stringi_1.8.7     hms_1.1.4        
- [5] digest_0.6.37     timechange_0.3.0  evaluate_1.0.5    grid_4.5.2       
- [9] fastmap_1.2.0     cellranger_1.1.0  rprojroot_2.1.1   jsonlite_2.0.0   
-[13] processx_3.8.6    whisker_0.4.1     ps_1.9.1          promises_1.4.0   
-[17] httr_1.4.7        scales_1.4.0      jquerylib_0.1.4   cli_3.6.5        
-[21] rlang_1.1.6       withr_3.0.2       cachem_1.1.0      yaml_2.3.10      
-[25] otel_0.2.0        tools_4.5.2       tzdb_0.5.0        httpuv_1.6.16    
-[29] vctrs_0.6.5       R6_2.6.1          lifecycle_1.0.4   git2r_0.36.2     
-[33] fs_1.6.6          pkgconfig_2.0.3   callr_3.7.6       pillar_1.11.1    
-[37] bslib_0.9.0       later_1.4.4       gtable_0.3.6      glue_1.8.0       
-[41] Rcpp_1.1.0        statmod_1.5.1     xfun_0.53         tidyselect_1.2.1 
-[45] rstudioapi_0.17.1 knitr_1.50        farver_2.1.2      htmltools_0.5.8.1
-[49] rmarkdown_2.30    compiler_4.5.2    getPass_0.2-4     S7_0.2.0         </code></pre>
+ [1] sandwich_3.1-1       rlang_1.1.6          git2r_0.36.2        
+ [4] multcomp_1.4-29      otel_0.2.0           compiler_4.5.2      
+ [7] getPass_0.2-4        callr_3.7.6          vctrs_0.6.5         
+[10] pkgconfig_2.0.3      fastmap_1.2.0        backports_1.5.0     
+[13] labeling_0.4.3       promises_1.4.0       rmarkdown_2.30      
+[16] tzdb_0.5.0           ps_1.9.1             xfun_0.53           
+[19] cachem_1.1.0         jsonlite_2.0.0       flashClust_1.01-2   
+[22] later_1.4.4          broom_1.0.10         cluster_2.1.8.1     
+[25] R6_2.6.1             bslib_0.9.0          stringi_1.8.7       
+[28] car_3.1-5            jquerylib_0.1.4      cellranger_1.1.0    
+[31] estimability_1.5.1   Rcpp_1.1.0           knitr_1.50          
+[34] zoo_1.8-14           httpuv_1.6.16        Matrix_1.7-4        
+[37] splines_4.5.2        timechange_0.3.0     tidyselect_1.2.1    
+[40] rstudioapi_0.17.1    abind_1.4-8          yaml_2.3.10         
+[43] codetools_0.2-20     processx_3.8.6       lattice_0.22-7      
+[46] withr_3.0.2          S7_0.2.0             coda_0.19-4.1       
+[49] evaluate_1.0.5       survival_3.8-3       pillar_1.11.1       
+[52] ggpubr_0.6.2         carData_3.0-6        whisker_0.4.1       
+[55] DT_0.34.0            generics_0.1.4       rprojroot_2.1.1     
+[58] hms_1.1.4            scales_1.4.0         xtable_1.8-4        
+[61] leaps_3.2            glue_1.8.0           emmeans_2.0.1       
+[64] scatterplot3d_0.3-44 tools_4.5.2          ggsignif_0.6.4      
+[67] fs_1.6.6             mvtnorm_1.3-3        grid_4.5.2          
+[70] Formula_1.2-5        cli_3.6.5            gtable_0.3.6        
+[73] rstatix_0.7.3        sass_0.4.10          digest_0.6.37       
+[76] TH.data_1.1-4        htmlwidgets_1.6.4    farver_2.1.2        
+[79] htmltools_0.5.8.1    lifecycle_1.0.4      httr_1.4.7          
+[82] multcompView_0.1-11  statmod_1.5.1        MASS_7.3-65         </code></pre>
+</div>
 </div>
 </div>
 </div>
