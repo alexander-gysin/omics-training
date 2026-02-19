@@ -60,10 +60,19 @@ library(stats)            # Built-in R package; provides prcomp() for PCA (no ne
 library(FactoMineR)       # Multi Factor Analysis for multi-omics, calculates the contribution to the PCA
 library(factoextra)       # PCA Visualization
 
+# Protein Protein interaction
+library(rbioapi)          # Allows to access the STRING database via API
+
+# Gene Set Enrichment Analysis
+library(msigdbr)          #Allows to download GeneSets
+library(clusterProfiler)  #Performs the GSEA provides Statistical correlation, visualization and some flexibility (can handle GO and KEGG)
+library(enrichplot)
+
 # Visualization Packages
 library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
 library(pheatmap)         # Quick and clean heatmaps to visualize clusters after PCA
 library(patchwork)        # Essential for combining multiple plots (e.g., PCA next to a Volcano plot)
+library(kableExtra)       #better display of tables in the knitted document
 ```
 
 ### ggplot global theme
@@ -111,6 +120,13 @@ stopifnot(all(colnames(Olink_data) == Clinical_data$Barcode))
 ```{r}
 rownames(Olink_data) <- str_remove(rownames(Olink_data), "_.*")
 ```
+### Save Processed Data
+```{r}
+# These are your core objects for all future analysis
+saveRDS(Olink_data, file = file.path(output_dir_data, "Olink_clean.rds"))
+saveRDS(Clinical_data, file = file.path(output_dir_data, "Clinical_clean.rds"))
+```
+
 
 ### Check for missing values in the Olink file
 ```{r missing values}
@@ -253,8 +269,17 @@ de_results <- de_results %>%
   ))
 ```
 
+### Save DEA Results
+```{r}
+# Save the full results table
+write.csv(de_results, file = file.path(output_dir_data, "DE_results_SSc_PAH.csv"), row.names = FALSE)
+
+# Also save as RDS to preserve variable types (like the 'Significance' factor)
+saveRDS(de_results, file = file.path(output_dir_data, "DE_results_SSc_PAH.rds"))
+```
+
 ## Visualization of the Differential Analysis
-### Volcanoplot
+### Volcanoplot preparation
 ```{r volcano plot preparation, class.source = "fold-hide"}
 # --- 1. DATA PREPARATION ---
 # Calculate the exact raw p-value that hits the FDR 0.05 threshold
@@ -286,6 +311,8 @@ top_labels <- bind_rows(top_up, top_down)
 
 ```
 
+
+### Volcano plot
 ```{r volcano plotting, class.source = "fold-hide"}
 # --- 2. THE FINAL PLOT ---
 ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
@@ -330,16 +357,6 @@ ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
            fontface = "plain")
 ```
 
-continue with:
-1. The Heatmap (Sample Clustering)
-A heatmap is essential because it tells you if your "top hits" actually succeed in grouping your patients correctly. If the SSc-PAH patients don't cluster together, your differential proteins might be driven by outliers.
-
-2. Boxplots (The "Deep Dive")
-Once you've identified your #1 protein (e.g., the one with the highest "score" from our last plot), you need to see the raw data distribution. A boxplot shows you the spread, the median, and if there are any outliers.
-
-3. MA Plot (The "Sanity Check")
-An MA plot looks at the relationship between the average expression (A) and the log fold change (M).
-Purpose: It helps you check if your significant results only happen in very low-abundance proteins (which can be noisy) or high-abundance ones. Ideally, your "red dots" should be spread across the x-axis.
 
 ### Heatmap
 ```{r heatmap, class.source = "fold-hide"}
@@ -424,7 +441,290 @@ ggplot(plot_data_long, aes(x = Group, y = NPX, fill = Group)) +
     y = "Normalized Protein Expression (NPX)"
   )
 ```
+### Save top labels
+```{r}
+# Save the list of top hits used for labeling and boxplots
+saveRDS(protein_list, file = file.path(output_dir_data, "top_hits_DEA_proteins_list.rds"))
+```
+### MA Plot
+```{r MA plot, class.source = "fold-hide"}
+# Average expression (A) vs Log Fold Change (M)
+# Use 'AveExpr' from limma results
+# 1. Create a subset for labeling: 
+# Significant proteins with Average Expression < 0
+low_expr_labels <- de_results %>%
+  filter(AveExpr < 0 & Significance != "Not Significant")
+
+# 2. Plot
+ggplot(de_results, aes(x = AveExpr, y = logFC, color = Significance)) +
+  geom_point(alpha = 0.4, size = 1.5) +
+  scale_color_manual(values = c("Down-regulated" = "navy", 
+                                "Not Significant" = "grey70", 
+                                "Up-regulated" = "firebrick3")) +
+  
+  # Add labels for low expression proteins
+  geom_text_repel(data = low_expr_labels,
+                  aes(label = Protein),
+                  size = 3,
+                  color = "black",
+                  max.overlaps = 20,
+                  box.padding = 0.5,
+                  segment.size = 0.2) +
+  
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  # Add a vertical line at the 0 threshold for clarity
+  geom_vline(xintercept = 0, linetype = "dotted", color = "grey50") +
+  
+  theme_minimal() +
+  labs(title = "MA Plot: Log Fold Change vs. Average Expression",
+       subtitle = "Labels indicate significant proteins with log2 NPX < 0",
+       x = "Average Expression (log2 NPX)",
+       y = "Log2 Fold Change")
+```
+**How to interpret a MA-Plot**
+
+1. Technical noise: Points to the far left are more susceptible to technical noise
+2. Horizontal Symmetry: The cloud should be roughly centered around y=0 if not this indicates a normalization issue.
+3. Biological Significance: Hits on the right are moe robust (higher signal to noise ratio) than the ones on the left.
+
+**Interpretation of this Plot**
+Only one hit might be due to technical noise
+The cloud is not centered around y=0
+The hits are (with one exeption) distributed across the x-axis
+
+## Protein Protein Interaction
+```{r map Gene Symbolds to String Protein IDs, class.source="hide-fold"}
+# 1. Get your top 30 proteins
+top_proteins <- de_results %>%
+  slice_min(order_by = adj.P.Val, n = 30) %>%
+  pull(Protein) %>%
+  as.character()
+
+# 2. Run the function
+rba_string_network_image(
+  ids = top_proteins, 
+  species = 9606, 
+  image_format = "highres_image"
+)
+
+# 3. Define paths
+rbio_dir <- here::here("analysis", "rbioapi")
+source_path <- file.path(rbio_dir, "string_network_image.png")
+target_path <- file.path(output_dir_figs, "ppi_network.png")
+
+# 4. Move the file and delete the folder
+if (file.exists(source_path)) {
+  # Ensure target directory exists
+  if (!dir.exists(dirname(target_path))) dir.create(dirname(target_path), recursive = TRUE)
+  
+  # Move and rename
+  file.rename(source_path, target_path)
+  
+  # Delete the rbioapi folder and its remaining contents
+  unlink(rbio_dir, recursive = TRUE)
+}
+
+# 5. Display the image
+if (file.exists(target_path)) {
+  knitr::include_graphics(target_path)
+}
+```
+**How to interpret a Protein-Protein-Interaction Network**
+Nodes: Each note is a protein
+Lines: Represent "interactions" it combines physical and functional interaction. Thicker lines indicate higher confidence.
+
+Hub Proteins:   Proteins which interact with a lot of other proteins are "hubs", they are central to the biological process
+Clusters:       Clusters are functional modules
+Singletons:     They might represent a biological process that differs from the ones represented by the other proteins or clusters
 
 
+## Enrichment Analysis
+just analyses the 30 top proteins also displayed in the PPI plot
+### Fetch STRING Enrichment Results
+```{r get_string_enrichment}
+# 1. We use the same top 30 proteins used for the PPI network
+top_proteins_enrich <- de_results %>%
+  slice_min(order_by = adj.P.Val, n = 30) %>%
+  pull(Protein) %>%
+  as.character()
+
+# 2. Call the STRING API to get functional enrichment
+# This creates the 'enrichment_results' object that was missing
+enrichment_results <- rba_string_enrichment(
+  ids = top_proteins_enrich,
+  species = 9606
+)
+```
+
+```{r Functional Enrichment, class.source="fold-hide"}
+# 1. Combine the list of results into a single data frame
+# rba_string_enrichment returns a list of tables; bind_rows stacks them
+enrichment_all <- enrichment_results %>% bind_rows()
+
+# 2. Filter for specific biological categories
+# We use categories confirmed to exist in your data: Function, Component, and Keyword
+enrichment_clean <- enrichment_all %>%
+  filter(category %in% c("Function", "Component", "Keyword")) %>%
+  arrange(fdr) %>% # Sort by significance (lowest False Discovery Rate first)
+  
+  # Safely select columns: any_of() prevents errors if column names vary across versions
+  # It looks for 'count', 'number_of_nodes', or 'number_of_genes'
+  select(term, description, fdr, category, 
+         any_of(c("count", "number_of_nodes", "number_of_genes"))) %>%
+  
+  # Rename the 5th column to 'Count' so our plotting code always works
+  rename(Count = 5)
+
+# 3. Prepare data for plotting
+# We take the top 15 most significant pathways and fix mathematical issues
+plot_data <- head(enrichment_clean, 15) %>%
+  mutate(
+    fdr = as.numeric(fdr),
+    # If FDR is 0, replace with a tiny number to allow -log10 calculation (which fails at 0)
+    fdr = ifelse(fdr <= 0, 1e-10, fdr), 
+    # Calculate the negative log10 of the FDR for better visualization (higher = more significant)
+    neg_log10_fdr = -log10(fdr)
+  )
+
+# 4. Create the Lollipop Plot
+# This is a cleaner alternative to a bar chart for categorical data
+ggplot(plot_data, 
+       aes(x = reorder(description, neg_log10_fdr), y = neg_log10_fdr)) +
+  
+  # Draw the "stick" of the lollipop
+  geom_segment(aes(xend = reorder(description, neg_log10_fdr), yend = 0), 
+               color = "grey50") +
+  
+  # Draw the "candy" (point) of the lollipop
+  # Size of point represents number of proteins; color represents the database source
+  geom_point(aes(size = Count, color = category), alpha = 0.8) +
+  
+  # Flip coordinates to make long pathway descriptions easy to read
+  coord_flip() +
+  
+  # Use a clean, professional theme for the report
+  theme_minimal() +
+  
+  # Apply a distinct color palette for the categories
+  scale_color_brewer(palette = "Dark2") + 
+  
+  # Add descriptive labels for the report
+  labs(
+    title = "Functional Enrichment: SSc-PAH vs SSc-noPAH",
+    subtitle = "Top 15 Molecular Functions & Components",
+    x = NULL, # Description is self-explanatory on the Y-axis
+    y = "-log10(FDR)",
+    size = "Protein Count",
+    color = "Category"
+  )
+```
+**How to interpret this plot**
+1. Length of the line: A longer line indicates a lower FDR which indicates higher significance
+2. Size of the dot: Indicates the protein count
+3. Color of the dot: Indicates to which category the dot belongs
+
+### Table of Top 15 Enrichment Groups and Proteins
+### Generate a Clean Table of Top 15 Enrichment Groups
+```{r enrichment_table_clean, class.source="fold-hide"}
+# 1. Take the top 15 groups
+top_15_groups <- head(enrichment_clean, 15)
+
+# 2. Join with raw data and format the protein list
+enrichment_table_clean <- top_15_groups %>%
+  left_join(
+    enrichment_all %>% select(description, inputGenes), 
+    by = "description"
+  ) %>%
+  mutate(
+    # Remove c(), quotes, and extra spaces
+    # This turns c("ACE2", "HGF") into "ACE2, HGF"
+    Proteins = gsub('c\\(|\\)|"|\\s', '', inputGenes),
+    # Optional: Replace commas with ", " for better line-wrapping in tables
+    Proteins = gsub(',', ', ', Proteins),
+    # Format FDR to a clean scientific notation
+    FDR = formatC(as.numeric(fdr), format = "e", digits = 2)
+  ) %>%
+  # 3. Select and rename for the final display
+  select(
+    Category = category,
+    Description = description,
+    Count = Count,
+    FDR,
+    `Associated Proteins` = Proteins
+  )
+
+# 4. Display with kableExtra for a high-quality look
+knitr::kable(enrichment_table_clean, 
+             caption = "Table 1: Top 15 Functional Enrichment Terms",
+             booktabs = TRUE) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                full_width = F, 
+                position = "left") %>%
+  column_spec(5, width = "30em") # This prevents the protein list from making the table too wide
+```
+
+## Gene Set Enrichment Analysis from the DEA
+### Prepare Ranked List for GSEA
+```{r gsea_prep, class.source="fold-hide"}
+# We need a clean, sorted, named vector with no NAs
+gsea_input <- de_results %>%
+  # Remove rows where Protein name or t-statistic is missing
+  filter(!is.na(Protein), !is.na(t)) %>%
+  # If there are duplicate protein names, take the one with the highest absolute t-stat
+  group_by(Protein) %>%
+  slice_max(order_by = abs(t), n = 1, with_ties = FALSE) %>%
+  ungroup() %>%
+  # Sort descending by t-statistic
+  arrange(desc(t))
+
+# Create the named vector
+ranked_vec <- gsea_input$t
+names(ranked_vec) <- gsea_input$Protein
+
+# FINAL CHECK: Remove any remaining NAs or non-finite values (like Inf)
+ranked_vec <- ranked_vec[is.finite(ranked_vec)]
+```
+
+### Run GSEA
+```{r run_gsea, class.source="fold-hide"}
+### 1. Get GO Biological Process Gene Sets
+go_genesets <- msigdbr(species = "Homo sapiens", category = "C5", subcategory = "BP") %>%
+  select(gs_name, gene_symbol)
+
+### 2. Run GSEA with GO-BP
+gsea_res <- GSEA(
+  geneList = ranked_vec,
+  TERM2GENE = go_genesets,
+  pvalueCutoff = 1,      # See everything first
+  minGSSize = 5,         # Suitable for Olink
+  maxGSSize = 500,
+  eps = 0,               # Better precision for p-values
+  nPermSimple = 10000,   # More stable permutations
+  verbose = FALSE
+)
+
+# Check the results
+gsea_results_df <- as.data.frame(gsea_res)
+# print(paste("Number of GO terms found:", nrow(gsea_results_df)))
+```
+
+### Filter GSEA Results
+This filter is too strict.
+Instead for searcing for significant differences lets's search for trends and label them as such. remplace FDR with uncorrected p-value
+```{r}
+# 1. Filter for Adjusted P-value < 0.05
+gsea_sig <- gsea_results_df %>%
+  filter(p.adjust < 0.05) %>%
+  # 2. Separate the NES into 'Activated' and 'Suppressed'
+  mutate(Status = ifelse(NES > 0, "Up-regulated in SSc-PAH", "Down-regulated in SSc-PAH")) %>%
+  arrange(desc(abs(NES))) # Order by the strongest effect size
+
+# 3. Clean the GO Term names (MSigDB puts 'GOBP_' in front of everything)
+gsea_sig$Description <- gsub("GOBP_", "", gsea_sig$Description)
+gsea_sig$Description <- gsub("_", " ", gsea_sig$Description)
+
+# Check how many significant terms remain
+print(paste("Significant GO terms found:", nrow(gsea_sig)))
+```
 
 
