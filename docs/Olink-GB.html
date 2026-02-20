@@ -539,15 +539,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree75a9e0cca720a5f632215d7a232f6d7d373c2686targetblank75a9e0ca">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreee95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7targetblanke95c6b9a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/75a9e0cca720a5f632215d7a232f6d7d373c2686" target="_blank">75a9e0c</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/e95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7" target="_blank">e95c6b9</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree75a9e0cca720a5f632215d7a232f6d7d373c2686targetblank75a9e0ca"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreee95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7targetblanke95c6b9a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -557,7 +557,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/75a9e0cca720a5f632215d7a232f6d7d373c2686" target="_blank">75a9e0c</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/e95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7" target="_blank">e95c6b9</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -629,6 +629,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/e95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7/analysis/Olink-GB.Rmd" target="_blank">e95c6b9</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-20
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/942320ddda713a33bee70d6f7a06c8c501659866/docs/Olink-GB.html" target="_blank">942320d</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-20
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1272,20 +1306,23 @@ alexander-gysin
 </table>
 </div>
 </div>
-<p><strong>How to interpret this plot:</strong> Each bar represents a
-Principal Component (PC). The Y-axis shows the percentage of total
-variance in the protein expression data explained by that specific
-component.</p>
-<p><strong>What this plot can show you: </strong>A Scree Plot can show
-you whether your PCA is “captured” by the first few dimensions. If the
-first two bars are significantly higher than the rest (as they are here
-at 37.1% cumulative), it confirms that the most important biological
-patterns are being successfully captured in 2D space.</p>
-<p><strong>Selection criteria:</strong> This plot includes all proteins
-provided in the filtered Olink_data.</p>
-<p><strong>Interpretation of this plot:</strong> PC1 and PC2
-cumulatively explain 37.1% of the variance, which is deemed
-acceptable.</p>
+<blockquote>
+<p><strong>Key Finding:</strong> The first two principal components
+capture a substantial portion of the total proteomic variance,
+confirming that the high-dimensional Olink data can be effectively
+simplified into a 2D space for group comparisons.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> Each bar represents a
+Principal Component (PC). The height shows the percentage of total
+variance explained by that component.</li>
+<li><strong>A Scree Plot can show you:</strong> How “structured” your
+data is. If the first few bars are tall, it means a few dominant
+biological signals are driving the differences between your
+samples.</li>
+<li><strong>Selection Criteria:</strong> This plot includes the variance
+distribution for all proteins measured in the panel.</li>
+</ul>
 </div>
 <div id="plotting-pca-by-group" class="section level3">
 <h3>Plotting PCA by Group</h3>
@@ -1360,19 +1397,18 @@ indicates that the groups differ moderately rather than exhibiting
 entirely distinct proteomic signatures.</p>
 </blockquote>
 <ul>
-<li><strong>How to interpret this plot:</strong> Each point represents
-an individual patient sample. The spatial distance between points
-reflects the similarity of their overall protein profiles. The shaded
-“ellipses” represent the <strong>95% confidence intervals</strong> for
-each group.</li>
+<li><strong>How to interpret this plot:</strong> Each point represents a
+patient sample. The spatial distance between points reflects the
+similarity of their overall protein profiles. The shaded “ellipses”
+represent the 95% confidence intervals for each group.</li>
 <li><strong>A PCA Plot can show you:</strong> If the clinical groups
 naturally “cluster” based on protein expression. Overlapping ellipses
 suggest high biological variability or a spectrum of disease states,
 while distinct clusters indicate a strong, group-specific protein
 signature.</li>
-<li><strong>Selection Criteria:</strong> This visualization utilizes
-<strong>all proteins</strong> in the filtered dataset to calculate
-coordinates and includes all patient samples.</li>
+<li><strong>Selection Criteria:</strong> This visualization utilizes all
+proteins in the filtered dataset to calculate coordinates and includes
+all patient samples.</li>
 </ul>
 </div>
 <div
@@ -1454,10 +1490,24 @@ alexander-gysin
 </div>
 </div>
 <pre class="r fold-hide"><code>#alternatively flip the plot horizontally to display more bars </code></pre>
-<p>This plot shows the top ten contributing proteins in both PD1 and
-PD2. The dashed line at 0.1% represents the average contribution which
-is expected in a Principal Component Analysis featuring aproximately
-1000 proteins, anything above is considered a contributor.</p>
+<blockquote>
+<p><strong>Key Finding:</strong> A specific subset of proteins
+contributes disproportionately to the variance captured by PC1 and PC2,
+identifying them as the primary drivers of the differences observed in
+the PCA map.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> The y-axis shows the
+percentage of a component’s variance attributed to a single protein. The
+dashed line represents the “average” expected contribution; any protein
+crossing this line is a significant driver of that axis.</li>
+<li><strong>A Contribution Plot can show you:</strong> Which specific
+proteins are responsible for the separation of your groups. Proteins in
+PC1 are likely the strongest differentiators between SSc-PAH and
+SSc-noPAH.</li>
+<li><strong>Selection Criteria:</strong> The top 10 proteins with the
+highest contribution scores for each axis are displayed.</li>
+</ul>
 </div>
 <div id="visualizing-contribution-by-protein-in-a-loading-plot"
 class="section level3">
@@ -1534,19 +1584,24 @@ alexander-gysin
 </table>
 </div>
 </div>
-<p>How to interpret the Loading Plot: 1. Horizontal Arrows: These
-proteins are purely PC1 drivers. If they point to the right, they are
-high in whatever Group is on the right of your PCA. 2. Vertical Arrows:
-These proteins are driving PC2. They don’t differentiate your PC1 groups
-much, but they show a separate trend (maybe Age or Sex). 3. Diagonal
-Arrows: These proteins contribute to both PC1 and PC2. 4. Clusters: If
-you see a “fan” of 5 proteins all pointing in the exact same direction,
-those proteins likely belong to the same biological pathway (e.g., a
-group of inflammatory cytokines all rising together).</p>
-<p>Interpretatio of this Loading Plot: 1. Since all proteins “point” in
-the same direction they are all correlated and likely belong to the same
-biological process 2. They have a positive correlation with PC1 and a
-negative correlation with PC2</p>
+<blockquote>
+<p><strong>Key Finding:</strong> The strong correlation between the top
+20 proteins (vectors pointing in similar directions) suggests they
+participate in a shared biological process that characterizes the
+SSc-PAH phenotype.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> The arrows (vectors)
+show how proteins correlate with the PCA axes. Arrows pointing in the
+same direction represent highly correlated proteins. The length of the
+arrow indicates the strength of the protein’s contribution.</li>
+<li><strong>A Loading Plot can show you:</strong> The relationship
+between individual proteins and the sample groupings.</li>
+<li><strong>Selection Criteria:</strong> The top 20 proteins by
+contribution scores are selected to ensure plot legibility.</li>
+</ul>
+<p>!! plot is not very informative and it seems to labelled redundantly
+(contribution two times)</p>
 </div>
 </div>
 <div id="differential-expression-analysis"
@@ -1741,6 +1796,26 @@ alexander-gysin
 </table>
 </div>
 </div>
+<blockquote>
+<p><strong>Key Finding:</strong> Several proteins demonstrate both high
+statistical significance and substantial fold changes, identifying them
+as robust candidates for the biological differentiation of SSc-PAH.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> The x-axis represents
+the magnitude of change (Log2 Fold Change), and the y-axis represents
+statistical significance (*-log10 P-value). Points in the top-right
+(red) are upregulated in SSc-PAH, while points in the top-left (blue)
+are downregulated.</li>
+<li><strong>A Volcano Plot can show you:</strong> The most “robust”
+biological hits at a glance. It helps distinguish between proteins that
+change drastically in concentration versus those that change
+consistently across the cohort.</li>
+<li><strong>Selection Criteria:</strong> Hits are selected based on a
+custom <strong>label_score</strong> (<span class="math inline">\(|logFC|
+\times -log10(P)\)</span>) to prioritize proteins in the extreme
+“corners” of the plot.</li>
+</ul>
 </div>
 <div id="heatmap" class="section level3">
 <h3>Heatmap</h3>
@@ -1806,14 +1881,23 @@ alexander-gysin
 </table>
 </div>
 </div>
-<p>This graph shows the 20 proteins with the lowest adjusted p-value
-(False Discovery Rate). The color indicates the relative change of that
-protein. The dendrogram on the left shows the correlation between
-proteins, closely branched proteins are likely part of the same
-biological process. The dendrogram on the top shows how similar the
-protein profile of the patients are. Closely branched patients have
-similar protein signatures. The height of a branch indicates its
-“closeness” to the next branch.</p>
+<blockquote>
+<p><strong>Key Finding:</strong> Clustering analysis reveals distinct
+protein expression “blocks” that characterize the SSc-PAH group,
+highlighting coordinated molecular shifts between the two
+conditions.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> Rows are proteins and
+columns are samples. Red indicates higher expression relative to the row
+average, and blue indicates lower expression. The trees (dendrograms)
+group similar samples and similar proteins together.</li>
+<li><strong>A Heatmap can show you:</strong> Protein “signatures.” It
+reveals if sub-groups of patients exist within your clinical groups and
+identifies which proteins move in unison.</li>
+<li><strong>Selection Criteria:</strong> The top 20 proteins with the
+lowest Adjusted P-values (FDR) were selected for visualization.</li>
+</ul>
 </div>
 <div id="boxplot" class="section level3">
 <h3>Boxplot</h3>
@@ -1921,6 +2005,23 @@ alexander-gysin
 </table>
 </div>
 </div>
+<blockquote>
+<p><strong>Key Finding:</strong> Individual protein distributions
+confirm that the top-ranked hits provide a consistent separation between
+SSc-PAH and SSc-noPAH, with minimal influence from extreme outliers.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> These show the exact
+NPX (Normalized Protein Expression) values for specific proteins. The
+box represents the interquartile range, and the horizontal line is the
+median.</li>
+<li><strong>A Boxplot can show you:</strong> The “cleanliness” of a
+discovery. It allows you to see if the group difference is a consistent
+shift across all patients or driven by only a few individuals.</li>
+<li><strong>Selection Criteria:</strong> A combination of the top 5
+proteins by P-value, Fold Change, and combined Score was used to provide
+a balanced overview of the data.</li>
+</ul>
 </div>
 <div id="save-top-labels" class="section level3">
 <h3>Save top labels</h3>
@@ -2003,18 +2104,27 @@ alexander-gysin
 </table>
 </div>
 </div>
-<p><strong>How to interpret a MA-Plot</strong></p>
-<ol style="list-style-type: decimal">
-<li>Technical noise: Points to the far left are more susceptible to
-technical noise</li>
-<li>Horizontal Symmetry: The cloud should be roughly centered around y=0
-if not this indicates a normalization issue.</li>
-<li>Biological Significance: Hits on the right are moe robust (higher
-signal to noise ratio) than the ones on the left.</li>
-</ol>
-<p><strong>Interpretation of this Plot</strong> Only one hit might be
-due to technical noise The cloud is not centered around y=0 The hits are
-(with one exeption) distributed across the x-axis</p>
+<blockquote>
+<p><strong>Key Finding:</strong> The distribution of significant hits
+across the range of average expression values suggests that the findings
+are not biased by protein abundance or low-signal technical noise. Data
+normalization is not perfect.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> The x-axis is the
+Average Expression (signal intensity), and the y-axis is the Log Fold
+Change. A balanced “cloud” centered at zero on the y-axis indicates
+successful data normalization.</li>
+<li><strong>An MA Plot can show you:</strong> If your significant hits
+are concentrated in low-abundance proteins (which may be noisier) or if
+they are distributed across the entire detection range of the Olink
+panel.</li>
+<li><strong>Selection Criteria:</strong> All proteins are plotted;
+significant proteins with lower average expression are labeled to
+monitor potential signal-to-noise issues.</li>
+</ul>
+<p>!! Doesn’t make much sense with NPX sine it is relative and not
+absolute.</p>
 </div>
 </div>
 <div id="protein-protein-interaction" class="section level2">
@@ -14725,20 +14835,27 @@ if (file.exists(source_path)) {
 if (file.exists(target_path)) {
   knitr::include_graphics(target_path)
 }</code></pre>
-<p><strong>How to interpret a Protein-Protein-Interaction
-Network</strong> Nodes: Each note is a protein Lines: Represent
-“interactions” it combines physical and functional interaction. Thicker
-lines indicate higher confidence.</p>
-<p>Hub Proteins: Proteins which interact with a lot of other proteins
-are “hubs”, they are central to the biological process Clusters:
-Clusters are functional modules Singletons: They might represent a
-biological process that differs from the ones represented by the other
-proteins or clusters</p>
+<blockquote>
+<p><strong>Key Finding:</strong> While some hits form clusters with
+eachother, many hits are singletons. This suggests that many biological
+processes are involved and not just one hub.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> Circles (nodes) are
+proteins, and lines (edges) are known interactions. Thicker lines
+indicate higher confidence based on experimental evidence and
+databases.</li>
+<li><strong>A PPI Network can show you:</strong> If your hits are
+biologically related. “Hub” proteins (those with many connections) often
+represent the most central regulators of the disease process.</li>
+<li><strong>Selection Criteria:</strong> The network is generated from
+the top 30 proteins ranked by Adjusted P-value.</li>
+</ul>
 </div>
 <div id="enrichment-analysis" class="section level2">
 <h2>Enrichment Analysis</h2>
-<p>just analyses the 30 top proteins also displayed in the PPI plot ###
-Fetch STRING Enrichment Results</p>
+<div id="fetch-string-enrichment-results" class="section level3">
+<h3>Fetch STRING Enrichment Results</h3>
 <pre class="r"><code># 1. We use the same top 30 proteins used for the PPI network
 top_proteins_enrich &lt;- de_results %&gt;%
   slice_min(order_by = adj.P.Val, n = 30) %&gt;%
@@ -14749,6 +14866,7 @@ top_proteins_enrich &lt;- de_results %&gt;%
 # This creates the &#39;enrichment_results&#39; object that was missing
 enrichment_results &lt;- rba_string_enrichment(
   ids = top_proteins_enrich,
+  #background = de_results$Protein, #background defines to what the expression is compared and thus when it is considered enriched or depleted
   species = 9606
 )</code></pre>
 <pre class="r fold-hide"><code># 1. Combine the list of results into a single data frame
@@ -14853,10 +14971,24 @@ alexander-gysin
 </table>
 </div>
 </div>
-<p><strong>How to interpret this plot</strong> 1. Length of the line: A
-longer line indicates a lower FDR which indicates higher significance 2.
-Size of the dot: Indicates the protein count 3. Color of the dot:
-Indicates to which category the dot belongs</p>
+<blockquote>
+<p><strong>Key Finding:</strong> Significant enrichment in specific
+molecular functions and cellular components suggests that the proteomic
+changes in SSc-PAH are concentrated in these biological processes.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> The length of the line
+(x-axis) indicates the significance (-log10 FDR). The dot size
+represents the number of proteins involved in that specific term.</li>
+<li><strong>A Lollipop Plot can show you:</strong> The “big picture”
+biology. It groups individual proteins into functional categories,
+making it easier to see which systems (e.g., “Extracellular Matrix” or
+“Cytokine Activity”) are most affected.</li>
+<li><strong>Selection Criteria:</strong> Displays the top 15 most
+significant terms across the Function, Component, and Keyword categories
+from the STRING database.</li>
+</ul>
+</div>
 <div id="table-of-top-15-enrichment-groups-and-proteins"
 class="section level3">
 <h3>Table of Top 15 Enrichment Groups and Proteins</h3>
@@ -15218,6 +15350,7 @@ class="section level2">
 <h2>Gene Set Enrichment Analysis from the DEA</h2>
 <div id="prepare-ranked-list-for-gsea" class="section level3">
 <h3>Prepare Ranked List for GSEA</h3>
+<p>!! Reconsider selection based on t, adjp or fc</p>
 <pre class="r fold-hide"><code># We need a clean, sorted, named vector with no NAs
 gsea_input &lt;- de_results %&gt;%
   # Remove rows where Protein name or t-statistic is missing
@@ -15238,6 +15371,7 @@ ranked_vec &lt;- ranked_vec[is.finite(ranked_vec)]</code></pre>
 </div>
 <div id="run-gsea" class="section level3">
 <h3>Run GSEA</h3>
+<p>!! Consider using another subcategory than BP</p>
 <pre class="r fold-hide"><code>### 1. Get GO Biological Process Gene Sets
 go_genesets &lt;- msigdbr(species = &quot;Homo sapiens&quot;, category = &quot;C5&quot;, subcategory = &quot;BP&quot;) %&gt;%
   select(gs_name, gene_symbol)
@@ -15260,10 +15394,10 @@ gsea_results_df &lt;- as.data.frame(gsea_res)
 </div>
 <div id="filter-gsea-results" class="section level3">
 <h3>Filter GSEA Results</h3>
-<p>This filter is too strict. Instead for searcing for significant
+<p>This filter is too strict. Instead for searching for significant
 differences lets’s search for trends and label them as such. remplace
-FDR with uncorrected p-value</p>
-<pre class="r"><code># 1. Choose your filter: Trends (pvalue) vs. Significant (p.adjust)
+FDR with uncorrected p-value !! Rather use adjusted p-value &lt; 0.2</p>
+<pre class="r"><code># 1. Choose your filter: Trends (p-value) vs. Significant (p.adjust)
 gsea_trends &lt;- gsea_results_df %&gt;%
   # Filter for trends (raw p-value &lt; 0.05)
   filter(pvalue &lt; 0.05) %&gt;% 
@@ -15330,6 +15464,61 @@ ggplot(top_10_trends_wrapped, aes(x = NES, y = reorder(Description_Wrapped, NES)
 <strong>Warning!</strong> The custom <code>fig.path</code> you set was
 ignored by workflowr.
 </div>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Visualization-of-GSEA-1">
+Past versions of "Visualization of GSEA-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-Visualization-of-GSEA-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/942320ddda713a33bee70d6f7a06c8c501659866/docs/figure/Olink-GB.Rmd/Visualization of GSEA-1.png" target="_blank">942320d</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-20
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<blockquote>
+<p><strong>Key Finding:</strong> Several GO Biological Processes show
+strong enrichment trends, indicating that SSc-PAH involves broad,
+pathway-level shifts even in cases where individual proteins may not
+reach strict significance.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> The x-axis is the NES
+(Normalized Enrichment Score). Color indicates the p-value</li>
+<li><strong>A GSEA Dot Plot can show you:</strong> Coordinated trends.
+It is more powerful than looking at single proteins because it
+aggregates signal from many related proteins to identify broader
+biological themes.</li>
+<li><strong>Selection Criteria:</strong> Filtered for trends (raw
+p-value &lt; 0.05) to capture a wide breadth of biological signal,
+selecting the top 10 Up and top 10 Down terms by NES.</li>
+</ul>
+<p>!!Make an emaplot to group the terms</p>
 </div>
 <div id="ridge-plot-of-top-gsea-trends" class="section level3">
 <h3>Ridge plot of Top GSEA Trends</h3>
@@ -15352,12 +15541,64 @@ ridgeplot(gsea_res, showCategory = target_pathways) +
 <strong>Warning!</strong> The custom <code>fig.path</code> you set was
 ignored by workflowr.
 </div>
-<p><strong>How to interpret this plot</strong> x-Axis: values higher
-than 0 indicate enrichment in SSc-PHA, lower than 0 indicates depletion
-in SSc-PHA t-statistic indicates the magintude of the cahnge relative to
-the change The width: narrow &amp; tall peak inidcates that all proteins
-in that group behave similarly, wide flat peak indicates that there is
-variance within the biological process</p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-ridgeplot-of-GSEA-1">
+Past versions of "ridgeplot of GSEA-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-ridgeplot-of-GSEA-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/942320ddda713a33bee70d6f7a06c8c501659866/docs/figure/Olink-GB.Rmd/ridgeplot of GSEA-1.png" target="_blank">942320d</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-20
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<blockquote>
+<p><strong>Key Finding:</strong> The observed biological trends show a
+coordinated shift in protein expression across specific pathways,
+suggesting that SSc-PAH is driven by broad functional changes rather
+than isolated protein fluctuations.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> Each “ridge” represents
+a GO pathway. The x-axis indicates the t-statistic (Differential
+Expression Score). A peak shifted to the right of zero indicates
+enrichment in SSc-PAH, while a peak to the left indicates
+depletion.</li>
+<li><strong>A Ridge Plot can show you:</strong> The “coordination” of a
+biological process. A narrow, tall peak indicates that all proteins in
+that pathway move together consistently, whereas a wide peak indicates
+high variance within that specific biological function.</li>
+<li><strong>Selection Criteria:</strong> The top 20 pathways are
+displayed based on the highest absolute Normalized Enrichment Score
+(NES) from the trending GSEA results (<span class="math inline">\(p &lt;
+0.05\)</span>).</li>
+</ul>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
