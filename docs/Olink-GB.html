@@ -379,7 +379,7 @@ div.tocify {
 <h4 class="author">alexander-gysin (<a
 href="mailto:alexander.gysin@usz.ch"
 class="email">alexander.gysin@usz.ch</a>)</h4>
-<h4 class="date">19 February, 2026</h4>
+<h4 class="date">20 February, 2026</h4>
 
 </div>
 
@@ -408,7 +408,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-02-19
+<strong>Last updated:</strong> 2026-02-20
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -539,15 +539,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree10e9eb58470c22934f1af49b1dde9531c532e516targetblank10e9eb5a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree75a9e0cca720a5f632215d7a232f6d7d373c2686targetblank75a9e0ca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/10e9eb58470c22934f1af49b1dde9531c532e516" target="_blank">10e9eb5</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/75a9e0cca720a5f632215d7a232f6d7d373c2686" target="_blank">75a9e0c</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree10e9eb58470c22934f1af49b1dde9531c532e516targetblank10e9eb5a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree75a9e0cca720a5f632215d7a232f6d7d373c2686targetblank75a9e0ca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -557,7 +557,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/10e9eb58470c22934f1af49b1dde9531c532e516" target="_blank">10e9eb5</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/75a9e0cca720a5f632215d7a232f6d7d373c2686" target="_blank">75a9e0c</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -629,6 +629,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/75a9e0cca720a5f632215d7a232f6d7d373c2686/analysis/Olink-GB.Rmd" target="_blank">75a9e0c</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-20
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/1e15a4ce30f6a3855a6560624fd3bdb447dc1eb2/docs/Olink-GB.html" target="_blank">1e15a4c</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1100,6 +1134,7 @@ library(rbioapi)          # Allows to access the STRING database via API
 library(msigdbr)          #Allows to download GeneSets
 library(clusterProfiler)  #Performs the GSEA provides Statistical correlation, visualization and some flexibility (can handle GO and KEGG)
 library(enrichplot)
+library(ggridges)
 
 # Visualization Packages
 library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
@@ -1237,10 +1272,20 @@ alexander-gysin
 </table>
 </div>
 </div>
-<p>Ths plot shows the Eigenvalues of the individual Principal Component.
-The higher the percentage the more variance is explained by the
-Principal Component. PC1 and PC2 cumulatively explain 37.1% of the
-variance, which is deemed acceptable.</p>
+<p><strong>How to interpret this plot:</strong> Each bar represents a
+Principal Component (PC). The Y-axis shows the percentage of total
+variance in the protein expression data explained by that specific
+component.</p>
+<p><strong>What this plot can show you: </strong>A Scree Plot can show
+you whether your PCA is “captured” by the first few dimensions. If the
+first two bars are significantly higher than the rest (as they are here
+at 37.1% cumulative), it confirms that the most important biological
+patterns are being successfully captured in 2D space.</p>
+<p><strong>Selection criteria:</strong> This plot includes all proteins
+provided in the filtered Olink_data.</p>
+<p><strong>Interpretation of this plot:</strong> PC1 and PC2
+cumulatively explain 37.1% of the variance, which is deemed
+acceptable.</p>
 </div>
 <div id="plotting-pca-by-group" class="section level3">
 <h3>Plotting PCA by Group</h3>
@@ -1307,6 +1352,28 @@ alexander-gysin
 </table>
 </div>
 </div>
+<blockquote>
+<p><strong>Key Finding:</strong> The protein profiles of SSc-PAH and
+SSc-noPAH patients show a visible shift along the primary axes of
+variance; however, the partial overlap of the 95% confidence ellipses
+indicates that the groups differ moderately rather than exhibiting
+entirely distinct proteomic signatures.</p>
+</blockquote>
+<ul>
+<li><strong>How to interpret this plot:</strong> Each point represents
+an individual patient sample. The spatial distance between points
+reflects the similarity of their overall protein profiles. The shaded
+“ellipses” represent the <strong>95% confidence intervals</strong> for
+each group.</li>
+<li><strong>A PCA Plot can show you:</strong> If the clinical groups
+naturally “cluster” based on protein expression. Overlapping ellipses
+suggest high biological variability or a spectrum of disease states,
+while distinct clusters indicate a strong, group-specific protein
+signature.</li>
+<li><strong>Selection Criteria:</strong> This visualization utilizes
+<strong>all proteins</strong> in the filtered dataset to calculate
+coordinates and includes all patient samples.</li>
+</ul>
 </div>
 <div
 id="visualizing-contribution-by-protein-in-a-simple-contribution-plot"
@@ -1639,6 +1706,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/1e15a4ce30f6a3855a6560624fd3bdb447dc1eb2/docs/figure/Olink-GB.Rmd/volcano plotting-1.png" target="_blank">1e15a4c</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/alexander-gysin/omics-training/blob/558ae77c852b60771a5ce16de896a786bab48a63/docs/figure/Olink-GB.Rmd/volcano plotting-1.png" target="_blank">558ae77</a>
 </td>
 <td>
@@ -1819,6 +1897,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/1e15a4ce30f6a3855a6560624fd3bdb447dc1eb2/docs/figure/Olink-GB.Rmd/boxplot-1.png" target="_blank">1e15a4c</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/alexander-gysin/omics-training/blob/558ae77c852b60771a5ce16de896a786bab48a63/docs/figure/Olink-GB.Rmd/boxplot-1.png" target="_blank">558ae77</a>
 </td>
 <td>
@@ -1876,6 +1965,43 @@ ggplot(de_results, aes(x = AveExpr, y = logFC, color = Significance)) +
 <div class="alert alert-warning">
 <strong>Warning!</strong> The custom <code>fig.path</code> you set was
 ignored by workflowr.
+</div>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-MA-plot-1">
+Past versions of "MA plot-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-MA-plot-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/1e15a4ce30f6a3855a6560624fd3bdb447dc1eb2/docs/figure/Olink-GB.Rmd/MA plot-1.png" target="_blank">1e15a4c</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-19
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <p><strong>How to interpret a MA-Plot</strong></p>
 <ol style="list-style-type: decimal">
@@ -14690,6 +14816,43 @@ ggplot(plot_data,
 <strong>Warning!</strong> The custom <code>fig.path</code> you set was
 ignored by workflowr.
 </div>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Functional-Enrichment-1">
+Past versions of "Functional Enrichment-1.png"
+</button>
+</p>
+<div id="fig-no-spaces-Functional-Enrichment-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/1e15a4ce30f6a3855a6560624fd3bdb447dc1eb2/docs/figure/Olink-GB.Rmd/Functional Enrichment-1.png" target="_blank">1e15a4c</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-19
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p><strong>How to interpret this plot</strong> 1. Length of the line: A
 longer line indicates a lower FDR which indicates higher significance 2.
 Size of the dot: Indicates the protein count 3. Color of the dot:
@@ -15100,20 +15263,101 @@ gsea_results_df &lt;- as.data.frame(gsea_res)
 <p>This filter is too strict. Instead for searcing for significant
 differences lets’s search for trends and label them as such. remplace
 FDR with uncorrected p-value</p>
-<pre class="r"><code># 1. Filter for Adjusted P-value &lt; 0.05
-gsea_sig &lt;- gsea_results_df %&gt;%
-  filter(p.adjust &lt; 0.05) %&gt;%
+<pre class="r"><code># 1. Choose your filter: Trends (pvalue) vs. Significant (p.adjust)
+gsea_trends &lt;- gsea_results_df %&gt;%
+  # Filter for trends (raw p-value &lt; 0.05)
+  filter(pvalue &lt; 0.05) %&gt;% 
+  
+  # --- UNCOMMENT BELOW TO SWITCH BACK TO STRICT SIGNIFICANCE ---
+  # filter(p.adjust &lt; 0.05) %&gt;% 
+  # --------------------------------------------------------------
+  
   # 2. Separate the NES into &#39;Activated&#39; and &#39;Suppressed&#39;
   mutate(Status = ifelse(NES &gt; 0, &quot;Up-regulated in SSc-PAH&quot;, &quot;Down-regulated in SSc-PAH&quot;)) %&gt;%
-  arrange(desc(abs(NES))) # Order by the strongest effect size
+  
+  # 3. Clean the GO Term names (Remove GOBP_ and underscores)
+  mutate(Description = gsub(&quot;GOBP_&quot;, &quot;&quot;, Description),
+         Description = gsub(&quot;_&quot;, &quot; &quot;, Description)) %&gt;%
+  
+  # 4. Order by effect size (NES)
+  arrange(desc(abs(NES)))
 
-# 3. Clean the GO Term names (MSigDB puts &#39;GOBP_&#39; in front of everything)
-gsea_sig$Description &lt;- gsub(&quot;GOBP_&quot;, &quot;&quot;, gsea_sig$Description)
-gsea_sig$Description &lt;- gsub(&quot;_&quot;, &quot; &quot;, gsea_sig$Description)
+# Check how many trending terms remain
+print(paste(&quot;Trending GO terms (raw p &lt; 0.05) found:&quot;, nrow(gsea_trends)))</code></pre>
+<pre><code>[1] &quot;Trending GO terms (raw p &lt; 0.05) found: 260&quot;</code></pre>
+<pre class="r"><code># Save the trending results for your supplement
+write.csv(gsea_trends, file = file.path(output_dir_data, &quot;GSEA_GO_BP_trends.csv&quot;), row.names = FALSE)</code></pre>
+</div>
+<div id="visualization-of-gsea" class="section level3">
+<h3>Visualization of GSEA</h3>
+<pre class="r"><code># 1. Prepare the data with wrapped labels
+top_10_trends_wrapped &lt;- gsea_trends %&gt;%
+  group_by(Status) %&gt;%
+  slice_max(order_by = abs(NES), n = 10) %&gt;%
+  ungroup() %&gt;%
+  mutate(
+    # Wrap strings at 40 characters
+    # You can change 40 to 30 if you want them even narrower
+    Description_Wrapped = str_wrap(Description, width = 40)
+  )
 
-# Check how many significant terms remain
-print(paste(&quot;Significant GO terms found:&quot;, nrow(gsea_sig)))</code></pre>
-<pre><code>[1] &quot;Significant GO terms found: 0&quot;</code></pre>
+# 2. Create the plot
+ggplot(top_10_trends_wrapped, aes(x = NES, y = reorder(Description_Wrapped, NES))) +
+  geom_point(aes(size = setSize, color = pvalue)) +
+  
+  # Standard color scale: red for significant/high-p, blue for low-p (or vice versa)
+  scale_color_gradient(low = &quot;indianred3&quot;, high = &quot;navyblue&quot;) +
+  
+  # Add a vertical line at 0
+  geom_vline(xintercept = 0, linetype = &quot;dashed&quot;, color = &quot;grey50&quot;) +
+  
+  theme_minimal() +
+  theme(
+    # Increase line spacing for the wrapped y-axis labels
+    axis.text.y = element_text(lineheight = 0.8, size = 9),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = &quot;Top Biological Trends in SSc-PAH (GSEA)&quot;,
+    subtitle = &quot;Top 10 Up/Down pathways (raw p-value &lt; 0.05)&quot;,
+    x = &quot;Normalized Enrichment Score (NES)&quot;,
+    y = NULL,
+    size = &quot;Protein Count&quot;,
+    color = &quot;P-value&quot;
+  )</code></pre>
+<img src="figure/Olink-GB.Rmd/Visualization%20of%20GSEA-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
+</div>
+<div id="ridge-plot-of-top-gsea-trends" class="section level3">
+<h3>Ridge plot of Top GSEA Trends</h3>
+<pre class="r"><code># 1. Get the names of the pathways you used in your &quot;Trends&quot; plot
+# (Assuming you want the top 15 by absolute NES)
+target_pathways &lt;- gsea_trends %&gt;%
+  arrange(desc(abs(NES))) %&gt;%
+  slice_head(n = 20) %&gt;%
+  pull(ID) # We use ID because clusterProfiler functions prefer the original GOBP_ ID
+
+# 2. Force the ridgeplot to show ONLY these pathways
+ridgeplot(gsea_res, showCategory = target_pathways) +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = &quot;dashed&quot;, color = &quot;red&quot;) +
+  labs(title = &quot;Distribution of Trends in SSc-PAH&quot;,
+       x = &quot;Differential Expression Score (t-statistic)&quot;,
+       y = NULL)</code></pre>
+<img src="figure/Olink-GB.Rmd/ridgeplot%20of%20GSEA-1.png" width="100%" style="display: block; margin: auto;" />
+<div class="alert alert-warning">
+<strong>Warning!</strong> The custom <code>fig.path</code> you set was
+ignored by workflowr.
+</div>
+<p><strong>How to interpret this plot</strong> x-Axis: values higher
+than 0 indicate enrichment in SSc-PHA, lower than 0 indicates depletion
+in SSc-PHA t-statistic indicates the magintude of the cahnge relative to
+the change The width: narrow &amp; tall peak inidcates that all proteins
+in that group behave similarly, wide flat peak indicates that there is
+variance within the biological process</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -15147,14 +15391,15 @@ attached base packages:
 
 other attached packages:
  [1] kableExtra_1.4.0       patchwork_1.3.2        pheatmap_1.0.13       
- [4] EnhancedVolcano_1.28.2 ggrepel_0.9.6          enrichplot_1.30.4     
- [7] clusterProfiler_4.18.4 msigdbr_25.1.1         rbioapi_0.8.3         
-[10] factoextra_1.0.7       FactoMineR_2.13        limma_3.66.0          
-[13] readxl_1.4.5           RColorBrewer_1.1-3     magrittr_2.0.4        
-[16] here_1.0.2             lubridate_1.9.4        forcats_1.0.1         
-[19] stringr_1.5.2          dplyr_1.1.4            purrr_1.1.0           
-[22] readr_2.1.5            tidyr_1.3.1            tibble_3.3.0          
-[25] ggplot2_4.0.0          tidyverse_2.0.0        workflowr_1.7.2       
+ [4] EnhancedVolcano_1.28.2 ggrepel_0.9.6          ggridges_0.5.7        
+ [7] enrichplot_1.30.4      clusterProfiler_4.18.4 msigdbr_25.1.1        
+[10] rbioapi_0.8.3          factoextra_1.0.7       FactoMineR_2.13       
+[13] limma_3.66.0           readxl_1.4.5           RColorBrewer_1.1-3    
+[16] magrittr_2.0.4         here_1.0.2             lubridate_1.9.4       
+[19] forcats_1.0.1          stringr_1.5.2          dplyr_1.1.4           
+[22] purrr_1.1.0            readr_2.1.5            tidyr_1.3.1           
+[25] tibble_3.3.0           ggplot2_4.0.0          tidyverse_2.0.0       
+[28] workflowr_1.7.2       
 
 loaded via a namespace (and not attached):
   [1] splines_4.5.2           later_1.4.4             ggplotify_0.1.3        
