@@ -67,6 +67,7 @@ library(rbioapi)          # Allows to access the STRING database via API
 library(msigdbr)          #Allows to download GeneSets
 library(clusterProfiler)  #Performs the GSEA provides Statistical correlation, visualization and some flexibility (can handle GO and KEGG)
 library(enrichplot)
+library(ggridges)
 
 # Visualization Packages
 library(EnhancedVolcano)  # Specifically designed for high-quality, easy volcano plots
@@ -148,8 +149,14 @@ pca_res <- PCA(t(Olink_data), graph = FALSE)
 p_scree <- fviz_eig(pca_res, addlabels = TRUE, barfill = "navy", barcolor = "navy")
 p_scree
 ```
-Ths plot shows the Eigenvalues of the individual Principal Component. The higher the percentage the more variance is explained by the Principal Component.
-PC1 and PC2 cumulatively explain 37.1% of the variance, which is deemed acceptable.
+**How to interpret this plot:** Each bar represents a Principal Component (PC). The Y-axis shows the percentage of total variance in the protein expression data explained by that specific component.
+
+**What this plot can show you: **A Scree Plot can show you whether your PCA is "captured" by the first few dimensions. If the first two bars are significantly higher than the rest (as they are here at 37.1% cumulative), it confirms that the most important biological patterns are being successfully captured in 2D space.
+
+**Selection criteria:** This plot includes all proteins provided in the filtered Olink_data.
+
+**Interpretation of this plot:** PC1 and PC2 cumulatively explain 37.1% of the variance, which is deemed acceptable.
+
 
 ### Plotting PCA by Group
 ```{r PCA Plot by group, class.source = "fold-hide"}
@@ -164,6 +171,11 @@ p_pca <- fviz_pca_ind(pca_res,
              labs(title = "Proteomics PCA")
 p_pca
 ```
+> **Key Finding:** The protein profiles of SSc-PAH and SSc-noPAH patients show a visible shift along the primary axes of variance; however, the partial overlap of the 95% confidence ellipses indicates that the groups differ moderately rather than exhibiting entirely distinct proteomic signatures.
+
+* **How to interpret this plot:** Each point represents an individual patient sample. The spatial distance between points reflects the similarity of their overall protein profiles. The shaded "ellipses" represent the **95% confidence intervals** for each group.
+* **A PCA Plot can show you:** If the clinical groups naturally "cluster" based on protein expression. Overlapping ellipses suggest high biological variability or a spectrum of disease states, while distinct clusters indicate a strong, group-specific protein signature.
+* **Selection Criteria:** This visualization utilizes **all proteins** in the filtered dataset to calculate coordinates and includes all patient samples.
 
 ### Visualizing contribution by protein in a simple contribution plot
 ```{r top 10 proteins, class.source = "fold-hide"}
@@ -712,19 +724,92 @@ gsea_results_df <- as.data.frame(gsea_res)
 This filter is too strict.
 Instead for searcing for significant differences lets's search for trends and label them as such. remplace FDR with uncorrected p-value
 ```{r}
-# 1. Filter for Adjusted P-value < 0.05
-gsea_sig <- gsea_results_df %>%
-  filter(p.adjust < 0.05) %>%
+# 1. Choose your filter: Trends (pvalue) vs. Significant (p.adjust)
+gsea_trends <- gsea_results_df %>%
+  # Filter for trends (raw p-value < 0.05)
+  filter(pvalue < 0.05) %>% 
+  
+  # --- UNCOMMENT BELOW TO SWITCH BACK TO STRICT SIGNIFICANCE ---
+  # filter(p.adjust < 0.05) %>% 
+  # --------------------------------------------------------------
+  
   # 2. Separate the NES into 'Activated' and 'Suppressed'
   mutate(Status = ifelse(NES > 0, "Up-regulated in SSc-PAH", "Down-regulated in SSc-PAH")) %>%
-  arrange(desc(abs(NES))) # Order by the strongest effect size
+  
+  # 3. Clean the GO Term names (Remove GOBP_ and underscores)
+  mutate(Description = gsub("GOBP_", "", Description),
+         Description = gsub("_", " ", Description)) %>%
+  
+  # 4. Order by effect size (NES)
+  arrange(desc(abs(NES)))
 
-# 3. Clean the GO Term names (MSigDB puts 'GOBP_' in front of everything)
-gsea_sig$Description <- gsub("GOBP_", "", gsea_sig$Description)
-gsea_sig$Description <- gsub("_", " ", gsea_sig$Description)
+# Check how many trending terms remain
+print(paste("Trending GO terms (raw p < 0.05) found:", nrow(gsea_trends)))
 
-# Check how many significant terms remain
-print(paste("Significant GO terms found:", nrow(gsea_sig)))
+# Save the trending results for your supplement
+write.csv(gsea_trends, file = file.path(output_dir_data, "GSEA_GO_BP_trends.csv"), row.names = FALSE)
 ```
+
+### Visualization of GSEA
+```{r Visualization of GSEA, fig.width=8, fig.height=8}
+# 1. Prepare the data with wrapped labels
+top_10_trends_wrapped <- gsea_trends %>%
+  group_by(Status) %>%
+  slice_max(order_by = abs(NES), n = 10) %>%
+  ungroup() %>%
+  mutate(
+    # Wrap strings at 40 characters
+    # You can change 40 to 30 if you want them even narrower
+    Description_Wrapped = str_wrap(Description, width = 40)
+  )
+
+# 2. Create the plot
+ggplot(top_10_trends_wrapped, aes(x = NES, y = reorder(Description_Wrapped, NES))) +
+  geom_point(aes(size = setSize, color = pvalue)) +
+  
+  # Standard color scale: red for significant/high-p, blue for low-p (or vice versa)
+  scale_color_gradient(low = "indianred3", high = "navyblue") +
+  
+  # Add a vertical line at 0
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey50") +
+  
+  theme_minimal() +
+  theme(
+    # Increase line spacing for the wrapped y-axis labels
+    axis.text.y = element_text(lineheight = 0.8, size = 9),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "Top Biological Trends in SSc-PAH (GSEA)",
+    subtitle = "Top 10 Up/Down pathways (raw p-value < 0.05)",
+    x = "Normalized Enrichment Score (NES)",
+    y = NULL,
+    size = "Protein Count",
+    color = "P-value"
+  )
+```
+
+### Ridge plot of Top GSEA Trends
+```{r ridgeplot of GSEA, fig.width=8, fig.height=13}
+# 1. Get the names of the pathways you used in your "Trends" plot
+# (Assuming you want the top 15 by absolute NES)
+target_pathways <- gsea_trends %>%
+  arrange(desc(abs(NES))) %>%
+  slice_head(n = 20) %>%
+  pull(ID) # We use ID because clusterProfiler functions prefer the original GOBP_ ID
+
+# 2. Force the ridgeplot to show ONLY these pathways
+ridgeplot(gsea_res, showCategory = target_pathways) +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Distribution of Trends in SSc-PAH",
+       x = "Differential Expression Score (t-statistic)",
+       y = NULL)
+```
+**How to interpret this plot**
+x-Axis: values higher than 0 indicate enrichment in SSc-PHA, lower than 0 indicates depletion in SSc-PHA
+        t-statistic indicates the magintude of the cahnge relative to the change
+The width: narrow & tall peak inidcates that all proteins in that group behave similarly, wide flat peak indicates that there is variance within the biological process
+
 
 
