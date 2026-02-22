@@ -23,26 +23,23 @@ if (!dir.exists(output_dir_data)) dir.create(output_dir_data)
 
 if (!dir.exists(here::here("docs", "figure"))) dir.create(here::here("docs", "figure"))
 
-output_dir_figs <- here::here("docs", "figure", paste0(current_file, ".Rmd"))
-if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)
 
 ```
 
 ### knitr configuration
 ```{r knitr config, cache=FALSE}
-knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  cache = FALSE,
+  dev = c("png", "pdf"),
+  dpi = 300, 
+  fig.width = 10,
+  fig.height = 8,       # Fixed a minor typo here ('fig.heigt' to 'fig.height')
+  out.width = "100%",
+  fig.align = "center"
+)
 
-knitr::opts_chunk$set(message = FALSE)
-
-knitr::opts_chunk$set(cache = FALSE)
-
-knitr::opts_chunk$set(dev = c("png", "pdf"),
-                      dpi = 300, 
-                      fig.width = 10,
-                      fig.heigt = 8,
-                      out.width = "100%",
-                      fig.path = paste0(output_dir_figs, "/"),
-                      fig.align = "center")
 ```
 
 ### Packages
@@ -529,7 +526,7 @@ rba_string_network_image(
 # 3. Define paths
 rbio_dir <- here::here("analysis", "rbioapi")
 source_path <- file.path(rbio_dir, "string_network_image.png")
-target_path <- file.path(output_dir_figs, "ppi_network.png")
+target_path <- file.path(output_dir_data, "ppi_network.png")
 
 # 4. Move the file and delete the folder
 if (file.exists(source_path)) {
