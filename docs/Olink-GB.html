@@ -379,7 +379,7 @@ div.tocify {
 <h4 class="author">alexander-gysin (<a
 href="mailto:alexander.gysin@usz.ch"
 class="email">alexander.gysin@usz.ch</a>)</h4>
-<h4 class="date">20 February, 2026</h4>
+<h4 class="date">22 February, 2026</h4>
 
 </div>
 
@@ -408,7 +408,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2026-02-20
+<strong>Last updated:</strong> 2026-02-22
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -539,15 +539,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreee95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7targetblanke95c6b9a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree69b5ab2834e1c8dabd0c2d50ba5b7eb541151231targetblank69b5ab2a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/alexander-gysin/omics-training/tree/e95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7" target="_blank">e95c6b9</a>
+<a href="https://github.com/alexander-gysin/omics-training/tree/69b5ab2834e1c8dabd0c2d50ba5b7eb541151231" target="_blank">69b5ab2</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtreee95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7targetblanke95c6b9a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomalexandergysinomicstrainingtree69b5ab2834e1c8dabd0c2d50ba5b7eb541151231targetblank69b5ab2a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -557,7 +557,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/alexander-gysin/omics-training/tree/e95c6b96a5a170fd1af9bcf45cd27ad6dd56d2c7" target="_blank">e95c6b9</a>.
+<a href="https://github.com/alexander-gysin/omics-training/tree/69b5ab2834e1c8dabd0c2d50ba5b7eb541151231" target="_blank">69b5ab2</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -629,6 +629,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/alexander-gysin/omics-training/blob/69b5ab2834e1c8dabd0c2d50ba5b7eb541151231/analysis/Olink-GB.Rmd" target="_blank">69b5ab2</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-22
+</td>
+<td>
+wflow_publish("analysis/Olink-GB.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/alexander-gysin/omics-training/c37d3e1c9ac3013b8b72e495b3693c63f6f45f36/docs/Olink-GB.html" target="_blank">c37d3e1</a>
+</td>
+<td>
+alexander-gysin
+</td>
+<td>
+2026-02-20
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1125,26 +1159,21 @@ current_file &lt;- &quot;Olink-GB&quot;
 output_dir_data &lt;- here::here(&quot;output&quot;, current_file)
 if (!dir.exists(output_dir_data)) dir.create(output_dir_data)
 
-if (!dir.exists(here::here(&quot;docs&quot;, &quot;figure&quot;))) dir.create(here::here(&quot;docs&quot;, &quot;figure&quot;))
-
-output_dir_figs &lt;- here::here(&quot;docs&quot;, &quot;figure&quot;, paste0(current_file, &quot;.Rmd&quot;))
-if (!dir.exists(output_dir_figs)) dir.create(output_dir_figs)</code></pre>
+if (!dir.exists(here::here(&quot;docs&quot;, &quot;figure&quot;))) dir.create(here::here(&quot;docs&quot;, &quot;figure&quot;))</code></pre>
 </div>
 <div id="knitr-configuration" class="section level3">
 <h3>knitr configuration</h3>
-<pre class="r"><code>knitr::opts_chunk$set(warning = FALSE)
-
-knitr::opts_chunk$set(message = FALSE)
-
-knitr::opts_chunk$set(cache = FALSE)
-
-knitr::opts_chunk$set(dev = c(&quot;png&quot;, &quot;pdf&quot;),
-                      dpi = 300, 
-                      fig.width = 10,
-                      fig.heigt = 8,
-                      out.width = &quot;100%&quot;,
-                      fig.path = paste0(output_dir_figs, &quot;/&quot;),
-                      fig.align = &quot;center&quot;)</code></pre>
+<pre class="r"><code>knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  cache = FALSE,
+  dev = c(&quot;png&quot;, &quot;pdf&quot;),
+  dpi = 300, 
+  fig.width = 10,
+  fig.height = 8,       # Fixed a minor typo here (&#39;fig.heigt&#39; to &#39;fig.height&#39;)
+  out.width = &quot;100%&quot;,
+  fig.align = &quot;center&quot;
+)</code></pre>
 </div>
 <div id="packages" class="section level3">
 <h3>Packages</h3>
@@ -1253,11 +1282,7 @@ pca_res &lt;- PCA(t(Olink_data), graph = FALSE)</code></pre>
 <h3>Plotting Eigenvalues</h3>
 <pre class="r"><code>p_scree &lt;- fviz_eig(pca_res, addlabels = TRUE, barfill = &quot;navy&quot;, barcolor = &quot;navy&quot;)
 p_scree</code></pre>
-<img src="figure/Olink-GB.Rmd/eigenvalue%20vis-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/eigenvalue%20vis-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-eigenvalue-vis-1">
 Past versions of "eigenvalue vis-1.png"
@@ -1336,11 +1361,7 @@ p_pca &lt;- fviz_pca_ind(pca_res,
              theme_minimal() +
              labs(title = &quot;Proteomics PCA&quot;)
 p_pca</code></pre>
-<img src="figure/Olink-GB.Rmd/PCA%20Plot%20by%20group-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/PCA%20Plot%20by%20group-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-PCA-Plot-by-group-1">
 Past versions of "PCA Plot by group-1.png"
@@ -1436,11 +1457,7 @@ p_top_proteins_PD2 &lt;- fviz_contrib(pca_res, choice = &quot;var&quot;, axes = 
 
 # / displays the plots in vertical order
 p_top_proteins_PD1 / p_top_proteins_PD2</code></pre>
-<img src="figure/Olink-GB.Rmd/top%2010%20proteins-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/top%2010%20proteins-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-top-10-proteins-1">
 Past versions of "top 10 proteins-1.png"
@@ -1531,11 +1548,7 @@ p_loading &lt;- fviz_pca_var(pca_res,
   labs(title = &quot;Loading Plot: Top 20 Proteins&quot;,
        subtitle = &quot;Direction shows correlation with PC1 (x) and PC2 (y)&quot;)
 p_loading</code></pre>
-<img src="figure/Olink-GB.Rmd/loading%20plot-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/loading%20plot-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-loading-plot-1">
 Past versions of "loading plot-1.png"
@@ -1732,11 +1745,7 @@ ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
            fill = &quot;white&quot;,        # White background prevents &quot;crashing&quot; with grid lines
            label.size = NA,       # Removes the box border
            fontface = &quot;plain&quot;)</code></pre>
-<img src="figure/Olink-GB.Rmd/volcano%20plotting-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/volcano%20plotting-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-volcano-plotting-1">
 Past versions of "volcano plotting-1.png"
@@ -1839,11 +1848,7 @@ pheatmap(plot_matrix,
          show_colnames = FALSE,
          main = &quot;Top 20 Proteins: SSc-PAH vs SSc-noPAH&quot;,
          color = my_palette)</code></pre>
-<img src="figure/Olink-GB.Rmd/heatmap-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/heatmap-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-heatmap-1">
 Past versions of heatmap-1.png
@@ -1952,11 +1957,7 @@ ggplot(plot_data_long, aes(x = Group, y = NPX, fill = Group)) +
     x = NULL, 
     y = &quot;Normalized Protein Expression (NPX)&quot;
   )</code></pre>
-<img src="figure/Olink-GB.Rmd/boxplot-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/boxplot-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-boxplot-1">
 Past versions of boxplot-1.png
@@ -2062,11 +2063,7 @@ ggplot(de_results, aes(x = AveExpr, y = logFC, color = Significance)) +
        subtitle = &quot;Labels indicate significant proteins with log2 NPX &lt; 0&quot;,
        x = &quot;Average Expression (log2 NPX)&quot;,
        y = &quot;Log2 Fold Change&quot;)</code></pre>
-<img src="figure/Olink-GB.Rmd/MA%20plot-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/MA%20plot-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-MA-plot-1">
 Past versions of "MA plot-1.png"
@@ -14817,7 +14814,7 @@ rba_string_network_image(
 <pre class="r hide-fold"><code># 3. Define paths
 rbio_dir &lt;- here::here(&quot;analysis&quot;, &quot;rbioapi&quot;)
 source_path &lt;- file.path(rbio_dir, &quot;string_network_image.png&quot;)
-target_path &lt;- file.path(output_dir_figs, &quot;ppi_network.png&quot;)
+target_path &lt;- file.path(output_dir_data, &quot;ppi_network.png&quot;)
 
 # 4. Move the file and delete the folder
 if (file.exists(source_path)) {
@@ -14929,11 +14926,7 @@ ggplot(plot_data,
     size = &quot;Protein Count&quot;,
     color = &quot;Category&quot;
   )</code></pre>
-<img src="figure/Olink-GB.Rmd/Functional%20Enrichment-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/Functional%20Enrichment-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Functional-Enrichment-1">
 Past versions of "Functional Enrichment-1.png"
@@ -15459,11 +15452,7 @@ ggplot(top_10_trends_wrapped, aes(x = NES, y = reorder(Description_Wrapped, NES)
     size = &quot;Protein Count&quot;,
     color = &quot;P-value&quot;
   )</code></pre>
-<img src="figure/Olink-GB.Rmd/Visualization%20of%20GSEA-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/Visualization%20of%20GSEA-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-Visualization-of-GSEA-1">
 Past versions of "Visualization of GSEA-1.png"
@@ -15536,11 +15525,7 @@ ridgeplot(gsea_res, showCategory = target_pathways) +
   labs(title = &quot;Distribution of Trends in SSc-PAH&quot;,
        x = &quot;Differential Expression Score (t-statistic)&quot;,
        y = NULL)</code></pre>
-<img src="figure/Olink-GB.Rmd/ridgeplot%20of%20GSEA-1.png" width="100%" style="display: block; margin: auto;" />
-<div class="alert alert-warning">
-<strong>Warning!</strong> The custom <code>fig.path</code> you set was
-ignored by workflowr.
-</div>
+<p><img src="figure/Olink-GB.Rmd/ridgeplot%20of%20GSEA-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-no-spaces-ridgeplot-of-GSEA-1">
 Past versions of "ridgeplot of GSEA-1.png"
