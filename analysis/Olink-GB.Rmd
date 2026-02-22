@@ -30,14 +30,7 @@ if (!dir.exists(here::here("docs", "figure"))) dir.create(here::here("docs", "fi
 ```{r knitr config, cache=FALSE}
 knitr::opts_chunk$set(
   warning = FALSE,
-  message = FALSE,
-  cache = FALSE,
-  dev = "png",           
-  dpi = 300, 
-  fig.width = 10,
-  fig.height = 8,       
-  out.width = "100%",
-  fig.align = "center"
+  message = FALSE
 )
 
 ```
@@ -142,7 +135,7 @@ pca_res <- PCA(t(Olink_data), graph = FALSE)
 
 ## PCA visualization 
 ### Plotting Eigenvalues
-```{r eigenvalue vis}
+```{r eigenvalue_vis}
 p_scree <- fviz_eig(pca_res, addlabels = TRUE, barfill = "navy", barcolor = "navy")
 p_scree
 ```
@@ -154,7 +147,7 @@ p_scree
 
 
 ### Plotting PCA by Group
-```{r PCA Plot by group, class.source = "fold-hide"}
+```{r PCA_Plot_by_group, class.source = "fold-hide"}
 # 2. PCA Plot colored by Group
 p_pca <- fviz_pca_ind(pca_res,
              label = "none", # Hide sample names for clarity
@@ -173,7 +166,7 @@ p_pca
 * **Selection Criteria:** This visualization utilizes all proteins in the filtered dataset to calculate coordinates and includes all patient samples.
 
 ### Visualizing contribution by protein in a simple contribution plot
-```{r top 10 proteins, class.source = "fold-hide"}
+```{r top_10_proteins, class.source = "fold-hide"}
 # manually set a common limit
 common_limit <- 0.5
 # Visualize the top 10 proteins contributing to PC1
@@ -204,7 +197,7 @@ p_top_proteins_PD1 / p_top_proteins_PD2
 
 
 ### Visualizing contribution by protein in a loading plot
-```{r loading plot, class.source = "fold-hide"}
+```{r loading_plot, class.source = "fold-hide"}
 # Variable Correlation Plot
 p_loading <- fviz_pca_var(pca_res, 
                           # Only show the top 20 proteins by 'contribution' 
@@ -322,7 +315,7 @@ top_labels <- bind_rows(top_up, top_down)
 
 
 ### Volcano plot
-```{r volcano plotting, class.source = "fold-hide"}
+```{r volcano_plotting, class.source = "fold-hide"}
 # --- 2. THE FINAL PLOT ---
 ggplot(de_results, aes(x = logFC, y = -log10(P.Value), color = Significance)) +
   geom_point(alpha = 0.4, size = 1.5) +
@@ -466,7 +459,7 @@ ggplot(plot_data_long, aes(x = Group, y = NPX, fill = Group)) +
 saveRDS(protein_list, file = file.path(output_dir_data, "top_hits_DEA_proteins_list.rds"))
 ```
 ### MA Plot
-```{r MA plot, class.source = "fold-hide"}
+```{r MA_plot, class.source = "fold-hide"}
 # Average expression (A) vs Log Fold Change (M)
 # Use 'AveExpr' from limma results
 # 1. Create a subset for labeling: 
@@ -509,7 +502,7 @@ ggplot(de_results, aes(x = AveExpr, y = logFC, color = Significance)) +
 !! Doesn't make much sense with NPX sine it is relative and not absolute.
 
 ## Protein Protein Interaction
-```{r map Gene Symbolds to String Protein IDs, class.source="hide-fold"}
+```{r map_Gene_Symbols_to_String, class.source="hide-fold"}
 # 1. Get your top 30 proteins
 top_proteins <- de_results %>%
   slice_min(order_by = adj.P.Val, n = 30) %>%
@@ -517,34 +510,30 @@ top_proteins <- de_results %>%
   as.character()
 
 # 2. Run the function
-rba_string_network_image(
+dummy_output <- rba_string_network_image(
   ids = top_proteins, 
   species = 9606, 
   image_format = "highres_image"
 )
 
-# 3. Define paths
-rbio_dir <- here::here("analysis", "rbioapi")
-source_path <- file.path(rbio_dir, "string_network_image.png")
-target_path <- file.path(output_dir_data, "ppi_network.png")
+# 3. Locate the downloaded file
+# workflowr runs from the project root, so the rbioapi folder is created there
+source_path <- here::here("rbioapi", "string_network_image.png")
 
-# 4. Move the file and delete the folder
+# 4. Define the target destination
+assets_dir <- here::here("docs", "assets")        
+if (!dir.exists(assets_dir)) dir.create(assets_dir)       
+target_path <- file.path(assets_dir, "ppi_network.png")
+
+# 5. Move the file and clean up
 if (file.exists(source_path)) {
-  # Ensure target directory exists
-  if (!dir.exists(dirname(target_path))) dir.create(dirname(target_path), recursive = TRUE)
-  
-  # Move and rename
-  file.rename(source_path, target_path)
-  
-  # Delete the rbioapi folder and its remaining contents
-  unlink(rbio_dir, recursive = TRUE)
-}
-
-# 5. Display the image
-if (file.exists(target_path)) {
-  knitr::include_graphics(target_path)
+  file.copy(source_path, target_path, overwrite = TRUE)
+  unlink(here::here("rbioapi"), recursive = TRUE) # Delete the auto-generated folder
 }
 ```
+
+<img src="assets/ppi_network.png" width="100%" alt="STRING Protein-Protein Interaction Network">
+
 > **Key Finding:** While some hits form clusters with eachother, many hits are singletons. This suggests that many biological processes are involved and not just one hub. 
 
 * **How to interpret this plot:** Circles (nodes) are proteins, and lines (edges) are known interactions. Thicker lines indicate higher confidence based on experimental evidence and databases.
@@ -571,7 +560,7 @@ enrichment_results <- rba_string_enrichment(
 ```
 
 
-```{r Functional Enrichment, class.source="fold-hide"}
+```{r Functional_Enrichment, class.source="fold-hide"}
 # 1. Combine the list of results into a single data frame
 # rba_string_enrichment returns a list of tables; bind_rows stacks them
 enrichment_all <- enrichment_results %>% bind_rows()
@@ -758,7 +747,7 @@ write.csv(gsea_trends, file = file.path(output_dir_data, "GSEA_GO_BP_trends.csv"
 ```
 
 ### Visualization of GSEA
-```{r Visualization of GSEA, fig.width=8, fig.height=8}
+```{r Visualization_GSEA, fig.width=8, fig.height=8}
 # 1. Prepare the data with wrapped labels
 top_10_trends_wrapped <- gsea_trends %>%
   group_by(Status) %>%
@@ -803,8 +792,8 @@ ggplot(top_10_trends_wrapped, aes(x = NES, y = reorder(Description_Wrapped, NES)
 
 !!Make an emaplot to group the terms
 
-### Ridge plot of Top GSEA Trends
-```{r ridgeplot of GSEA, fig.width=8, fig.height=13}
+### Ridge plot _of Top GSEA Trends
+```{r ridgeplotGSEA, fig.width=8, fig.height=13}
 # 1. Get the names of the pathways you used in your "Trends" plot
 # (Assuming you want the top 15 by absolute NES)
 target_pathways <- gsea_trends %>%
