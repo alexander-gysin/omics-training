@@ -32,10 +32,10 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   cache = FALSE,
-  dev = c("png", "pdf"),
+  dev = "png",           
   dpi = 300, 
   fig.width = 10,
-  fig.height = 8,       # Fixed a minor typo here ('fig.heigt' to 'fig.height')
+  fig.height = 8,       
   out.width = "100%",
   fig.align = "center"
 )
